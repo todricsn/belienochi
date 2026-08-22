@@ -881,7 +881,31 @@ svg { fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: 
 }
 .restaurant-gallery-item button:hover img { filter: saturate(1.04) contrast(1.02); transform: scale(1.035); }
 .restaurant-gallery-item button:focus-visible { outline: 2px solid var(--accent-deep); outline-offset: -5px; }
-.restaurant-note { margin: 24px 0 0; color: color-mix(in srgb, var(--ink) 66%, transparent); font-size: 11px; line-height: 1.6; }
+.restaurant-note-group { display: flex; flex-direction: column; align-items: flex-start; margin-top: 24px; }
+.restaurant-note { margin: 0; color: color-mix(in srgb, var(--ink) 66%, transparent); font-size: 11px; line-height: 1.6; }
+.restaurant-note-booking {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  min-width: 244px;
+  min-height: 58px;
+  margin-top: 20px;
+  padding: 0 26px;
+  color: var(--sand);
+  background: var(--accent-deep);
+  border: 1px solid var(--accent-deep);
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  transition: color .35s ease, background .35s ease, transform .35s ease;
+}
+.restaurant-note-booking svg { width: 21px; fill: none; stroke: currentColor; stroke-width: 1.6; transition: transform .3s ease; }
+.restaurant-note-booking:hover { color: var(--accent-deep); background: transparent; transform: translateY(-3px); }
+.restaurant-note-booking:hover svg { transform: translateX(5px); }
+.restaurant-note-booking:focus-visible { outline: 2px solid var(--accent-deep); outline-offset: 4px; }
 
 .features.section { padding-top: 0; background: var(--sand-bg); }
 .features-heading {
@@ -1105,7 +1129,7 @@ svg { fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: 
   .restaurant-gallery-item { grid-column: auto; grid-row: auto; }
   .restaurant-gallery-item-landscape { aspect-ratio: 16 / 10; }
   .restaurant-gallery-item-portrait { aspect-ratio: 4 / 5; }
-  .restaurant-note { margin-top: 18px; }
+  .restaurant-note-group { margin-top: 18px; }
   .features-heading { min-height: 0; gap: 24px; padding-top: 62px; padding-bottom: 62px; }
   .features-heading .display-title { font-size: clamp(48px, 14vw, 68px); }
   .features-lead { font-size: 14px; }
