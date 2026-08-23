@@ -1077,13 +1077,13 @@ svg { fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: 
   filter: saturate(.72) sepia(.08) brightness(.88) contrast(1.05);
 }
 
-.site-footer { padding: 60px var(--page-pad) 28px; color: var(--ink); background: var(--sand-bg); }
+.site-footer { padding: 60px var(--page-pad) 28px; color: var(--sand); background: #2c2925; }
 .footer-brand { display: block; width: min(340px, 75vw); height: 210px; margin: -30px auto 20px; overflow: hidden; }
-.footer-brand img { height: 100%; object-fit: contain; filter: brightness(0) saturate(100%) invert(75%) sepia(12%) saturate(558%) hue-rotate(356deg) brightness(90%) contrast(85%); }
-.site-footer nav { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px 42px; padding: 26px 0 45px; border-top: 1px solid color-mix(in srgb, var(--accent) 34%, transparent); }
+.footer-brand img { height: 100%; object-fit: contain; filter: brightness(0) saturate(100%) invert(94%) sepia(12%) saturate(233%) hue-rotate(341deg) brightness(101%) contrast(91%); }
+.site-footer nav { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px 42px; padding: 26px 0 45px; border-top: 1px solid color-mix(in srgb, var(--sand) 22%, transparent); }
 .site-footer nav a { font-size: 10px; letter-spacing: .14em; text-transform: uppercase; transition: color .3s ease; }
-.site-footer nav a:hover { color: var(--accent-deep); }
-.footer-bottom { display: flex; justify-content: space-between; gap: 20px; padding-top: 24px; border-top: 1px solid color-mix(in srgb, var(--accent) 34%, transparent); color: color-mix(in srgb, var(--ink) 62%, transparent); font-size: 9px; letter-spacing: .08em; text-transform: uppercase; }
+.site-footer nav a:hover { color: var(--accent-photo); }
+.footer-bottom { display: flex; justify-content: space-between; gap: 20px; padding-top: 24px; border-top: 1px solid color-mix(in srgb, var(--sand) 22%, transparent); color: color-mix(in srgb, var(--sand) 62%, transparent); font-size: 9px; letter-spacing: .08em; text-transform: uppercase; }
 .footer-bottom p { margin: 0; }
 
 .reveal { opacity: 0; transform: translateY(34px); transition: opacity .8s ease, transform .8s cubic-bezier(.2,.7,.2,1); }
