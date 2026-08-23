@@ -7,7 +7,7 @@
   <meta name="theme-color" content="#ffffff">
   <title>Белые Ночи — гостиница и хостел в Красноярске</title>
   <link rel="icon" href="assets/images/logo-heritage.png">
-  <link rel="stylesheet" href="styles.css?v=20260823-3">
+  <link rel="stylesheet" href="styles.css?v=20260823-5">
 </head>
 <body>
   <div class="page-loader" aria-hidden="true">
@@ -21,6 +21,7 @@
     <nav class="desktop-nav desktop-nav-left" aria-label="Навигация слева">
       <a href="#about">О нас</a>
       <a href="#hotel">Гостиница</a>
+      <a href="rooms.html">Номера</a>
     </nav>
 
     <a class="header-logo" href="#top" aria-label="Белые Ночи — на главную">
@@ -42,6 +43,7 @@
       <nav aria-label="Мобильная навигация">
         <a href="#about">О нас</a>
         <a href="#hotel">Гостиница</a>
+        <a href="rooms.html">Номера</a>
         <a href="#hostel">Хостел</a>
         <a href="#restaurant">Ресторан</a>
         <a href="#contacts">Контакты</a>
@@ -401,21 +403,36 @@
       </div>
     </section>
 
-    <section class="booking" id="contacts">
-      <div class="booking-image" aria-hidden="true"></div>
-      <div class="booking-shade" aria-hidden="true"></div>
-      <div class="booking-content section">
-        <div class="section-kicker reveal">Бронирование</div>
-        <h2 class="display-title reveal">Выберите формат —<br>мы подскажем номер</h2>
-        <p class="reveal">Позвоните, чтобы узнать о наличии мест и актуальной стоимости на ваши даты.</p>
-        <div class="booking-actions reveal">
-          <a class="primary-button" href="tel:+79293386160">+7 929 338-61-60</a>
-          <a class="secondary-button" href="tel:+79135386027">+7 913 538-60-27</a>
+    <section class="contacts section" id="contacts" aria-labelledby="contacts-title">
+      <h2 class="contacts-title reveal" id="contacts-title">Контакты</h2>
+
+      <div class="contacts-info">
+        <div class="contacts-info-item reveal">
+          <h3>Время работы</h3>
+          <p>Мы работаем круглосуточно.</p>
         </div>
-        <a class="address-link reveal" href="https://2gis.ru/krasnoyarsk/firm/70000001035117499" target="_blank" rel="noopener noreferrer">
-          <span>Красноярск, 2-я Красногорская улица, 3</span>
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m0 0-5-5m5 5-5 5"/></svg>
-        </a>
+        <div class="contacts-info-item contacts-location reveal">
+          <h3>Наше местоположение</h3>
+          <a href="https://yandex.ru/maps/-/CTwFQZ9y" target="_blank" rel="noopener noreferrer">Красноярск, 2-я Красногорская улица, 3</a>
+        </div>
+      </div>
+
+      <div class="contacts-booking reveal">
+        <h3>Забронировать</h3>
+        <div class="contacts-phone-list">
+          <a href="tel:+79293386160" aria-label="Позвонить по номеру +7 929 338-61-60">+7 929 338-61-60</a>
+          <a href="tel:+79135386027" aria-label="Позвонить по номеру +7 913 538-60-27">+7 913 538-60-27</a>
+        </div>
+      </div>
+
+      <div class="contacts-map reveal" aria-label="Белые Ночи на Яндекс Картах">
+        <iframe
+          title="Гостиница Белые Ночи на Яндекс Картах"
+          src="https://yandex.ru/map-widget/v1/?ll=92.767812%2C56.048454&amp;mode=search&amp;oid=202440014712&amp;ol=biz&amp;z=17"
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          allowfullscreen>
+        </iframe>
       </div>
     </section>
   </main>
@@ -459,7 +476,7 @@
       <img src="assets/images/logo-heritage.png" alt="Белые Ночи">
     </a>
     <nav aria-label="Навигация в подвале">
-      <a href="#hotel">Гостиница</a><a href="#hostel">Хостел</a><a href="#restaurant">Ресторан</a><a href="#about">О нас</a><a href="#contacts">Контакты</a>
+      <a href="#hotel">Гостиница</a><a href="rooms.html">Номера</a><a href="#hostel">Хостел</a><a href="#restaurant">Ресторан</a><a href="#about">О нас</a><a href="#contacts">Контакты</a>
     </nav>
     <div class="footer-bottom">
       <p>© <span data-year></span> «Белые Ночи»</p>
