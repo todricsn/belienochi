@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Шаблон каталога номеров гостиницы «Белые Ночи» в Красноярске.">
+  <meta name="description" content="Номера гостиницы и места в хостеле «Белые Ночи» в Красноярске: фотографии, варианты размещения и стоимость.">
   <meta name="theme-color" content="#ffffff">
   <title>Номера — Белые Ночи</title>
   <link rel="icon" href="assets/images/logo-heritage.png">
-  <link rel="stylesheet" href="rooms.css?v=20260824-1">
+  <link rel="stylesheet" href="rooms.css?v=20260831-1">
 </head>
 <body>
   <header class="rooms-header">
@@ -24,154 +24,204 @@
 
   <main>
     <section class="rooms-hero" aria-labelledby="rooms-title">
-      <p class="section-kicker">Каталог проживания</p>
+      <p class="section-kicker">Гостиница и хостел</p>
       <h1 id="rooms-title">Номера</h1>
-      <p class="rooms-intro">Скоро здесь появятся фотографии, комплектация и актуальная стоимость каждого варианта проживания. Пока можно позвонить администратору — он расскажет о свободных номерах и поможет выбрать подходящий.</p>
+      <p class="rooms-intro">Выберите подходящий вариант, посмотрите фотографии и стоимость. Чтобы уточнить наличие и забронировать номер или место в хостеле, позвоните администратору.</p>
     </section>
 
-    <section class="rooms-catalog" aria-label="Шаблоны карточек номеров">
-      <article class="room-card">
-        <span class="room-index" aria-hidden="true">01</span>
-        <div class="room-card-head">
-          <p>Карточка номера</p>
-          <span>Данные ожидаются</span>
+    <section class="rooms-catalog" aria-label="Номера гостиницы и места в хостеле">
+      <article class="room-card" id="standard-twin-1">
+        <div class="room-gallery" data-room-gallery aria-label="Фотографии стандартного номера с двумя кроватями">
+          <div class="room-gallery-viewport">
+            <div class="room-gallery-track" data-room-track>
+              <button class="room-photo" type="button" data-room-photo aria-label="Открыть фотографию спальни"><img src="assets/images/rooms/img_4044.webp" alt="Стандартный номер с двумя отдельными кроватями" width="1350" height="1800"></button>
+              <button class="room-photo" type="button" data-room-photo aria-label="Открыть фотографию номера у окна"><img src="assets/images/rooms/img_4042.webp" alt="Две кровати у окна в стандартном номере" width="1350" height="1800" loading="lazy" decoding="async"></button>
+              <button class="room-photo" type="button" data-room-photo aria-label="Открыть фотографию номера"><img src="assets/images/rooms/img_4043.webp" alt="Интерьер стандартного номера с двумя кроватями" width="1350" height="1800" loading="lazy" decoding="async"></button>
+              <button class="room-photo" type="button" data-room-photo aria-label="Открыть фотографию ванной"><img src="assets/images/rooms/img_4047.webp" alt="Ванная комната стандартного номера" width="1350" height="1800" loading="lazy" decoding="async"></button>
+              <button class="room-photo" type="button" data-room-photo aria-label="Открыть фотографию ванной"><img src="assets/images/rooms/img_4046.webp" alt="Душ и санузел стандартного номера" width="1350" height="1800" loading="lazy" decoding="async"></button>
+            </div>
+          </div>
+          <div class="room-gallery-bar"><span><b data-room-current>01</b> / 05</span><div class="room-gallery-controls"><button type="button" data-room-prev aria-label="Предыдущая фотография"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5m0 0 5-5m-5 5 5 5"/></svg></button><button type="button" data-room-next aria-label="Следующая фотография"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m0 0-5-5m5 5-5 5"/></svg></button></div></div>
         </div>
-        <h2>Номер 01</h2>
-        <dl class="room-meta">
-          <div><dt>Вместимость</dt><dd>X мест</dd></div>
-          <div><dt>Стоимость</dt><dd>от XXX ₽</dd></div>
-        </dl>
-        <p class="room-description">Описание и комплектация будут добавлены после получения данных.</p>
-        <a class="room-action" href="tel:+79293386160">
-          <span>Уточнить наличие</span>
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m0 0-5-5m5 5-5 5"/></svg>
-        </a>
+        <div class="room-card-body">
+          <div class="room-card-head"><p>Гостиница</p><span>01</span></div>
+          <h2>Стандартная<span>Две отдельные кровати</span></h2>
+          <dl class="room-meta"><div><dt>Размещение</dt><dd>2 кровати</dd></div><div><dt>Стоимость</dt><dd>2 500 ₽<small>за номер</small></dd></div></dl>
+          <a class="room-action" href="tel:+79293386160"><span>Забронировать</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m0 0-5-5m5 5-5 5"/></svg></a>
+        </div>
       </article>
 
-      <article class="room-card">
-        <span class="room-index" aria-hidden="true">02</span>
-        <div class="room-card-head">
-          <p>Карточка номера</p>
-          <span>Данные ожидаются</span>
+      <article class="room-card" id="standard-double-1">
+        <div class="room-gallery" data-room-gallery aria-label="Фотографии стандартного номера с большой кроватью">
+          <div class="room-gallery-viewport"><div class="room-gallery-track" data-room-track>
+            <button class="room-photo" type="button" data-room-photo aria-label="Открыть фотографию спальни"><img src="assets/images/rooms/img_4052.webp" alt="Стандартный номер с большой кроватью" width="1350" height="1800" loading="lazy" decoding="async"></button>
+            <button class="room-photo" type="button" data-room-photo aria-label="Открыть фотографию номера у окна"><img src="assets/images/rooms/img_4053.webp" alt="Окно и спальная зона стандартного номера" width="1350" height="1800" loading="lazy" decoding="async"></button>
+            <button class="room-photo" type="button" data-room-photo aria-label="Открыть фотографию номера"><img src="assets/images/rooms/img_4049.webp" alt="Телевизор и окно в стандартном номере" width="1350" height="1800" loading="lazy" decoding="async"></button>
+            <button class="room-photo" type="button" data-room-photo aria-label="Открыть фотографию ванной"><img src="assets/images/rooms/img_4054.webp" alt="Ванная комната стандартного номера" width="1350" height="1800" loading="lazy" decoding="async"></button>
+          </div></div>
+          <div class="room-gallery-bar"><span><b data-room-current>01</b> / 04</span><div class="room-gallery-controls"><button type="button" data-room-prev aria-label="Предыдущая фотография"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5m0 0 5-5m-5 5 5 5"/></svg></button><button type="button" data-room-next aria-label="Следующая фотография"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m0 0-5-5m5 5-5 5"/></svg></button></div></div>
         </div>
-        <h2>Номер 02</h2>
-        <dl class="room-meta">
-          <div><dt>Вместимость</dt><dd>X мест</dd></div>
-          <div><dt>Стоимость</dt><dd>от XXX ₽</dd></div>
-        </dl>
-        <p class="room-description">Описание и комплектация будут добавлены после получения данных.</p>
-        <a class="room-action" href="tel:+79293386160">
-          <span>Уточнить наличие</span>
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m0 0-5-5m5 5-5 5"/></svg>
-        </a>
+        <div class="room-card-body">
+          <div class="room-card-head"><p>Гостиница</p><span>02</span></div>
+          <h2>Стандартная<span>Большая кровать</span></h2>
+          <dl class="room-meta"><div><dt>Размещение</dt><dd>Большая кровать</dd></div><div><dt>Стоимость</dt><dd>2 200 ₽<small>за номер</small></dd></div></dl>
+          <a class="room-action" href="tel:+79293386160"><span>Забронировать</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m0 0-5-5m5 5-5 5"/></svg></a>
+        </div>
       </article>
 
-      <article class="room-card">
-        <span class="room-index" aria-hidden="true">03</span>
-        <div class="room-card-head">
-          <p>Карточка номера</p>
-          <span>Данные ожидаются</span>
+      <article class="room-card" id="standard-twin-2">
+        <div class="room-gallery" data-room-gallery aria-label="Фотографии стандартного номера с двумя кроватями">
+          <div class="room-gallery-viewport"><div class="room-gallery-track" data-room-track>
+            <button class="room-photo" type="button" data-room-photo aria-label="Открыть фотографию спальни"><img src="assets/images/rooms/img_4056.webp" alt="Стандартный номер с двумя отдельными кроватями" width="1350" height="1800" loading="lazy" decoding="async"></button>
+            <button class="room-photo" type="button" data-room-photo aria-label="Открыть фотографию номера"><img src="assets/images/rooms/img_4058.webp" alt="Интерьер стандартного номера с двумя кроватями" width="1350" height="1800" loading="lazy" decoding="async"></button>
+            <button class="room-photo" type="button" data-room-photo aria-label="Открыть фотографию телевизора"><img src="assets/images/rooms/img_4060.webp" alt="Телевизор в стандартном номере" width="1350" height="1800" loading="lazy" decoding="async"></button>
+            <button class="room-photo" type="button" data-room-photo aria-label="Открыть фотографию ванной"><img src="assets/images/rooms/img_4062.webp" alt="Раковина и санузел стандартного номера" width="1350" height="1800" loading="lazy" decoding="async"></button>
+            <button class="room-photo" type="button" data-room-photo aria-label="Открыть фотографию душа"><img src="assets/images/rooms/img_4061.webp" alt="Душ в стандартном номере" width="1350" height="1800" loading="lazy" decoding="async"></button>
+          </div></div>
+          <div class="room-gallery-bar"><span><b data-room-current>01</b> / 05</span><div class="room-gallery-controls"><button type="button" data-room-prev aria-label="Предыдущая фотография"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5m0 0 5-5m-5 5 5 5"/></svg></button><button type="button" data-room-next aria-label="Следующая фотография"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m0 0-5-5m5 5-5 5"/></svg></button></div></div>
         </div>
-        <h2>Номер 03</h2>
-        <dl class="room-meta">
-          <div><dt>Вместимость</dt><dd>X мест</dd></div>
-          <div><dt>Стоимость</dt><dd>от XXX ₽</dd></div>
-        </dl>
-        <p class="room-description">Описание и комплектация будут добавлены после получения данных.</p>
-        <a class="room-action" href="tel:+79293386160">
-          <span>Уточнить наличие</span>
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m0 0-5-5m5 5-5 5"/></svg>
-        </a>
+        <div class="room-card-body">
+          <div class="room-card-head"><p>Гостиница</p><span>03</span></div>
+          <h2>Стандартная<span>Две отдельные кровати</span></h2>
+          <dl class="room-meta"><div><dt>Размещение</dt><dd>2 кровати</dd></div><div><dt>Стоимость</dt><dd>2 500 ₽<small>за номер</small></dd></div></dl>
+          <a class="room-action" href="tel:+79293386160"><span>Забронировать</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m0 0-5-5m5 5-5 5"/></svg></a>
+        </div>
       </article>
 
-      <article class="room-card">
-        <span class="room-index" aria-hidden="true">04</span>
-        <div class="room-card-head">
-          <p>Карточка номера</p>
-          <span>Данные ожидаются</span>
+      <article class="room-card" id="suite">
+        <div class="room-gallery" data-room-gallery aria-label="Фотографии номера люкс">
+          <div class="room-gallery-viewport"><div class="room-gallery-track" data-room-track>
+            <button class="room-photo" type="button" data-room-photo aria-label="Открыть фотографию люкса"><img src="assets/images/rooms/img_4074.webp" alt="Интерьер номера люкс" width="1350" height="1800" loading="lazy" decoding="async"></button>
+            <button class="room-photo" type="button" data-room-photo aria-label="Открыть фотографию спальни"><img src="assets/images/rooms/img_4070.webp" alt="Большая кровать в номере люкс" width="1350" height="1800" loading="lazy" decoding="async"></button>
+            <button class="room-photo" type="button" data-room-photo aria-label="Открыть фотографию номера"><img src="assets/images/rooms/img_4065.webp" alt="Номер люкс у окна" width="1350" height="1800" loading="lazy" decoding="async"></button>
+            <button class="room-photo" type="button" data-room-photo aria-label="Открыть фотографию дивана"><img src="assets/images/rooms/img_4068.webp" alt="Диван в номере люкс" width="1350" height="1800" loading="lazy" decoding="async"></button>
+            <button class="room-photo" type="button" data-room-photo aria-label="Открыть фотографию зоны отдыха"><img src="assets/images/rooms/img_4067.webp" alt="Зона отдыха в номере люкс" width="1350" height="1800" loading="lazy" decoding="async"></button>
+            <button class="room-photo" type="button" data-room-photo aria-label="Открыть фотографию ванной"><img src="assets/images/rooms/img_4078.webp" alt="Ванная комната номера люкс" width="1350" height="1800" loading="lazy" decoding="async"></button>
+            <button class="room-photo" type="button" data-room-photo aria-label="Открыть фотографию душа"><img src="assets/images/rooms/img_4076.webp" alt="Душ в номере люкс" width="1350" height="1800" loading="lazy" decoding="async"></button>
+            <button class="room-photo" type="button" data-room-photo aria-label="Открыть фотографию ванной"><img src="assets/images/rooms/img_4075.webp" alt="Интерьер ванной комнаты номера люкс" width="1350" height="1800" loading="lazy" decoding="async"></button>
+          </div></div>
+          <div class="room-gallery-bar"><span><b data-room-current>01</b> / 08</span><div class="room-gallery-controls"><button type="button" data-room-prev aria-label="Предыдущая фотография"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5m0 0 5-5m-5 5 5 5"/></svg></button><button type="button" data-room-next aria-label="Следующая фотография"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m0 0-5-5m5 5-5 5"/></svg></button></div></div>
         </div>
-        <h2>Номер 04</h2>
-        <dl class="room-meta">
-          <div><dt>Вместимость</dt><dd>X мест</dd></div>
-          <div><dt>Стоимость</dt><dd>от XXX ₽</dd></div>
-        </dl>
-        <p class="room-description">Описание и комплектация будут добавлены после получения данных.</p>
-        <a class="room-action" href="tel:+79293386160">
-          <span>Уточнить наличие</span>
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m0 0-5-5m5 5-5 5"/></svg>
-        </a>
+        <div class="room-card-body">
+          <div class="room-card-head"><p>Гостиница</p><span>04</span></div>
+          <h2>Люкс<span>Большая кровать и диван</span></h2>
+          <dl class="room-meta"><div><dt>Размещение</dt><dd>Кровать и диван</dd></div><div><dt>Стоимость</dt><dd>3 500 ₽<small>за номер</small></dd></div></dl>
+          <a class="room-action" href="tel:+79293386160"><span>Забронировать</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m0 0-5-5m5 5-5 5"/></svg></a>
+        </div>
       </article>
 
-      <article class="room-card">
-        <span class="room-index" aria-hidden="true">05</span>
-        <div class="room-card-head">
-          <p>Карточка номера</p>
-          <span>Данные ожидаются</span>
+      <article class="room-card" id="standard-double-2">
+        <div class="room-gallery" data-room-gallery aria-label="Фотографии стандартного номера с большой кроватью">
+          <div class="room-gallery-viewport"><div class="room-gallery-track" data-room-track>
+            <button class="room-photo" type="button" data-room-photo aria-label="Открыть фотографию спальни"><img src="assets/images/rooms/img_4087.webp" alt="Стандартный номер с большой кроватью" width="1350" height="1800" loading="lazy" decoding="async"></button>
+            <button class="room-photo" type="button" data-room-photo aria-label="Открыть фотографию номера"><img src="assets/images/rooms/img_4085.webp" alt="Большая кровать в стандартном номере" width="1350" height="1800" loading="lazy" decoding="async"></button>
+            <button class="room-photo" type="button" data-room-photo aria-label="Открыть фотографию спальни"><img src="assets/images/rooms/img_4086.webp" alt="Интерьер стандартного номера с большой кроватью" width="1350" height="1800" loading="lazy" decoding="async"></button>
+            <button class="room-photo" type="button" data-room-photo aria-label="Открыть фотографию ванной"><img src="assets/images/rooms/img_4090.webp" alt="Ванная комната стандартного номера" width="1350" height="1800" loading="lazy" decoding="async"></button>
+            <button class="room-photo" type="button" data-room-photo aria-label="Открыть фотографию душа"><img src="assets/images/rooms/img_4088.webp" alt="Душ в стандартном номере" width="1350" height="1800" loading="lazy" decoding="async"></button>
+          </div></div>
+          <div class="room-gallery-bar"><span><b data-room-current>01</b> / 05</span><div class="room-gallery-controls"><button type="button" data-room-prev aria-label="Предыдущая фотография"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5m0 0 5-5m-5 5 5 5"/></svg></button><button type="button" data-room-next aria-label="Следующая фотография"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m0 0-5-5m5 5-5 5"/></svg></button></div></div>
         </div>
-        <h2>Номер 05</h2>
-        <dl class="room-meta">
-          <div><dt>Вместимость</dt><dd>X мест</dd></div>
-          <div><dt>Стоимость</dt><dd>от XXX ₽</dd></div>
-        </dl>
-        <p class="room-description">Описание и комплектация будут добавлены после получения данных.</p>
-        <a class="room-action" href="tel:+79293386160">
-          <span>Уточнить наличие</span>
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m0 0-5-5m5 5-5 5"/></svg>
-        </a>
+        <div class="room-card-body">
+          <div class="room-card-head"><p>Гостиница</p><span>05</span></div>
+          <h2>Стандартная<span>Большая кровать</span></h2>
+          <dl class="room-meta"><div><dt>Размещение</dt><dd>Большая кровать</dd></div><div><dt>Стоимость</dt><dd>2 500 ₽<small>за номер</small></dd></div></dl>
+          <a class="room-action" href="tel:+79293386160"><span>Забронировать</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m0 0-5-5m5 5-5 5"/></svg></a>
+        </div>
       </article>
 
-      <article class="room-card">
-        <span class="room-index" aria-hidden="true">06</span>
-        <div class="room-card-head">
-          <p>Карточка номера</p>
-          <span>Данные ожидаются</span>
+      <article class="room-card" id="hostel-eight">
+        <div class="room-gallery" data-room-gallery aria-label="Фотографии хостела на восемь кроватей">
+          <div class="room-gallery-viewport"><div class="room-gallery-track" data-room-track>
+            <button class="room-photo" type="button" data-room-photo aria-label="Открыть фотографию хостела"><img src="assets/images/rooms/img_4091.webp" alt="Комната хостела на восемь кроватей" width="1350" height="1800" loading="lazy" decoding="async"></button>
+            <button class="room-photo" type="button" data-room-photo aria-label="Открыть фотографию кроватей"><img src="assets/images/rooms/img_4092.webp" alt="Двухъярусные кровати в хостеле" width="1350" height="1800" loading="lazy" decoding="async"></button>
+            <button class="room-photo" type="button" data-room-photo aria-label="Открыть фотографию комнаты"><img src="assets/images/rooms/img_4093.webp" alt="Спальные места в хостеле" width="1350" height="1800" loading="lazy" decoding="async"></button>
+            <button class="room-photo" type="button" data-room-photo aria-label="Открыть фотографию хостела"><img src="assets/images/rooms/img_4094.webp" alt="Интерьер комнаты хостела на восемь кроватей" width="1350" height="1800" loading="lazy" decoding="async"></button>
+            <button class="room-photo" type="button" data-room-photo aria-label="Открыть фотографию душа"><img src="assets/images/rooms/img_4095.webp" alt="Душ в хостеле" width="1350" height="1800" loading="lazy" decoding="async"></button>
+            <button class="room-photo" type="button" data-room-photo aria-label="Открыть фотографию ванной"><img src="assets/images/rooms/img_4096.webp" alt="Раковина и санузел хостела" width="1350" height="1800" loading="lazy" decoding="async"></button>
+          </div></div>
+          <div class="room-gallery-bar"><span><b data-room-current>01</b> / 06</span><div class="room-gallery-controls"><button type="button" data-room-prev aria-label="Предыдущая фотография"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5m0 0 5-5m-5 5 5 5"/></svg></button><button type="button" data-room-next aria-label="Следующая фотография"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m0 0-5-5m5 5-5 5"/></svg></button></div></div>
         </div>
-        <h2>Номер 06</h2>
-        <dl class="room-meta">
-          <div><dt>Вместимость</dt><dd>X мест</dd></div>
-          <div><dt>Стоимость</dt><dd>от XXX ₽</dd></div>
-        </dl>
-        <p class="room-description">Описание и комплектация будут добавлены после получения данных.</p>
-        <a class="room-action" href="tel:+79293386160">
-          <span>Уточнить наличие</span>
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m0 0-5-5m5 5-5 5"/></svg>
-        </a>
+        <div class="room-card-body">
+          <div class="room-card-head"><p>Хостел</p><span>06</span></div>
+          <h2>Хостел<span>Восемь кроватей</span></h2>
+          <dl class="room-meta"><div><dt>Размещение</dt><dd>8 кроватей</dd></div><div><dt>Стоимость</dt><dd>850 ₽<small>за место</small></dd></div></dl>
+          <a class="room-action" href="tel:+79293386160"><span>Забронировать место</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m0 0-5-5m5 5-5 5"/></svg></a>
+        </div>
       </article>
 
-      <article class="room-card">
-        <span class="room-index" aria-hidden="true">07</span>
-        <div class="room-card-head">
-          <p>Карточка номера</p>
-          <span>Данные ожидаются</span>
+      <article class="room-card" id="family-four">
+        <div class="room-gallery" data-room-gallery aria-label="Фотографии семейного номера на четыре кровати">
+          <div class="room-gallery-viewport"><div class="room-gallery-track" data-room-track>
+            <button class="room-photo" type="button" data-room-photo aria-label="Открыть фотографию семейного номера"><img src="assets/images/rooms/img_4097.webp" alt="Семейный номер на четыре кровати" width="1350" height="1800" loading="lazy" decoding="async"></button>
+            <button class="room-photo" type="button" data-room-photo aria-label="Открыть фотографию номера"><img src="assets/images/rooms/img_4098.webp" alt="Кровати в семейном номере" width="1350" height="1800" loading="lazy" decoding="async"></button>
+            <button class="room-photo" type="button" data-room-photo aria-label="Открыть фотографию спальни"><img src="assets/images/rooms/img_4099.webp" alt="Интерьер семейного номера" width="1350" height="1800" loading="lazy" decoding="async"></button>
+            <button class="room-photo" type="button" data-room-photo aria-label="Открыть фотографию ванной"><img src="assets/images/rooms/img_4102.webp" alt="Раковина и санузел семейного номера" width="1350" height="1800" loading="lazy" decoding="async"></button>
+            <button class="room-photo" type="button" data-room-photo aria-label="Открыть фотографию душа"><img src="assets/images/rooms/img_4103.webp" alt="Душ в семейном номере" width="1350" height="1800" loading="lazy" decoding="async"></button>
+          </div></div>
+          <div class="room-gallery-bar"><span><b data-room-current>01</b> / 05</span><div class="room-gallery-controls"><button type="button" data-room-prev aria-label="Предыдущая фотография"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5m0 0 5-5m-5 5 5 5"/></svg></button><button type="button" data-room-next aria-label="Следующая фотография"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m0 0-5-5m5 5-5 5"/></svg></button></div></div>
         </div>
-        <h2>Номер 07</h2>
-        <dl class="room-meta">
-          <div><dt>Вместимость</dt><dd>X мест</dd></div>
-          <div><dt>Стоимость</dt><dd>от XXX ₽</dd></div>
-        </dl>
-        <p class="room-description">Описание и комплектация будут добавлены после получения данных.</p>
-        <a class="room-action" href="tel:+79293386160">
-          <span>Уточнить наличие</span>
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m0 0-5-5m5 5-5 5"/></svg>
-        </a>
+        <div class="room-card-body">
+          <div class="room-card-head"><p>Гостиница</p><span>07</span></div>
+          <h2>Семейная<span>Четыре кровати</span></h2>
+          <dl class="room-meta"><div><dt>Размещение</dt><dd>4 кровати</dd></div><div><dt>Стоимость</dt><dd>3 200 ₽<small>за номер</small></dd></div></dl>
+          <a class="room-action" href="tel:+79293386160"><span>Забронировать</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m0 0-5-5m5 5-5 5"/></svg></a>
+        </div>
       </article>
 
-      <article class="room-card">
-        <span class="room-index" aria-hidden="true">08</span>
-        <div class="room-card-head">
-          <p>Карточка номера</p>
-          <span>Данные ожидаются</span>
+      <article class="room-card" id="hostel-four">
+        <div class="room-gallery" data-room-gallery aria-label="Фотографии хостела на четыре кровати">
+          <div class="room-gallery-viewport"><div class="room-gallery-track" data-room-track>
+            <button class="room-photo" type="button" data-room-photo aria-label="Открыть фотографию хостела"><img src="assets/images/rooms/img_4104.webp" alt="Комната хостела на четыре кровати" width="1350" height="1800" loading="lazy" decoding="async"></button>
+            <button class="room-photo" type="button" data-room-photo aria-label="Открыть фотографию комнаты"><img src="assets/images/rooms/img_4105.webp" alt="Кровати у окна в хостеле" width="1350" height="1800" loading="lazy" decoding="async"></button>
+            <button class="room-photo" type="button" data-room-photo aria-label="Открыть фотографию кроватей"><img src="assets/images/rooms/img_4106.webp" alt="Спальные места в хостеле" width="1350" height="1800" loading="lazy" decoding="async"></button>
+            <button class="room-photo" type="button" data-room-photo aria-label="Открыть фотографию хостела"><img src="assets/images/rooms/img_4107.webp" alt="Интерьер комнаты хостела на четыре кровати" width="1350" height="1800" loading="lazy" decoding="async"></button>
+            <button class="room-photo" type="button" data-room-photo aria-label="Открыть фотографию душа"><img src="assets/images/rooms/img_4110.webp" alt="Душ в хостеле" width="1350" height="1800" loading="lazy" decoding="async"></button>
+          </div></div>
+          <div class="room-gallery-bar"><span><b data-room-current>01</b> / 05</span><div class="room-gallery-controls"><button type="button" data-room-prev aria-label="Предыдущая фотография"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5m0 0 5-5m-5 5 5 5"/></svg></button><button type="button" data-room-next aria-label="Следующая фотография"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m0 0-5-5m5 5-5 5"/></svg></button></div></div>
         </div>
-        <h2>Номер 08</h2>
-        <dl class="room-meta">
-          <div><dt>Вместимость</dt><dd>X мест</dd></div>
-          <div><dt>Стоимость</dt><dd>от XXX ₽</dd></div>
-        </dl>
-        <p class="room-description">Описание и комплектация будут добавлены после получения данных.</p>
-        <a class="room-action" href="tel:+79293386160">
-          <span>Уточнить наличие</span>
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m0 0-5-5m5 5-5 5"/></svg>
-        </a>
+        <div class="room-card-body">
+          <div class="room-card-head"><p>Хостел</p><span>08</span></div>
+          <h2>Хостел<span>Четыре кровати</span></h2>
+          <dl class="room-meta"><div><dt>Размещение</dt><dd>4 кровати</dd></div><div><dt>Стоимость</dt><dd>850 ₽<small>за место</small></dd></div></dl>
+          <a class="room-action" href="tel:+79293386160"><span>Забронировать место</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m0 0-5-5m5 5-5 5"/></svg></a>
+        </div>
+      </article>
+
+      <article class="room-card" id="junior-suite">
+        <div class="room-gallery" data-room-gallery aria-label="Фотографии полулюкса">
+          <div class="room-gallery-viewport"><div class="room-gallery-track" data-room-track>
+            <button class="room-photo" type="button" data-room-photo aria-label="Открыть фотографию полулюкса"><img src="assets/images/rooms/img_4112.webp" alt="Интерьер полулюкса" width="1350" height="1800" loading="lazy" decoding="async"></button>
+            <button class="room-photo" type="button" data-room-photo aria-label="Открыть фотографию спальни"><img src="assets/images/rooms/img_4113.webp" alt="Большая кровать в полулюксе" width="1350" height="1800" loading="lazy" decoding="async"></button>
+            <button class="room-photo" type="button" data-room-photo aria-label="Открыть фотографию номера"><img src="assets/images/rooms/img_4117.webp" alt="Спальная зона полулюкса" width="1350" height="1800" loading="lazy" decoding="async"></button>
+            <button class="room-photo" type="button" data-room-photo aria-label="Открыть фотографию мебели"><img src="assets/images/rooms/img_4116.webp" alt="Рабочее место и кресло в полулюксе" width="1350" height="1800" loading="lazy" decoding="async"></button>
+            <button class="room-photo" type="button" data-room-photo aria-label="Открыть фотографию зоны отдыха"><img src="assets/images/rooms/img_4118.webp" alt="Диван в полулюксе" width="1350" height="1800" loading="lazy" decoding="async"></button>
+            <button class="room-photo" type="button" data-room-photo aria-label="Открыть фотографию ванной"><img src="assets/images/rooms/img_4119.webp" alt="Ванная комната полулюкса" width="1350" height="1800" loading="lazy" decoding="async"></button>
+          </div></div>
+          <div class="room-gallery-bar"><span><b data-room-current>01</b> / 06</span><div class="room-gallery-controls"><button type="button" data-room-prev aria-label="Предыдущая фотография"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5m0 0 5-5m-5 5 5 5"/></svg></button><button type="button" data-room-next aria-label="Следующая фотография"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m0 0-5-5m5 5-5 5"/></svg></button></div></div>
+        </div>
+        <div class="room-card-body">
+          <div class="room-card-head"><p>Гостиница</p><span>09</span></div>
+          <h2>Полулюкс</h2>
+          <dl class="room-meta"><div><dt>Категория</dt><dd>Полулюкс</dd></div><div><dt>Стоимость</dt><dd>2 500 ₽<small>за номер</small></dd></div></dl>
+          <a class="room-action" href="tel:+79293386160"><span>Забронировать</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m0 0-5-5m5 5-5 5"/></svg></a>
+        </div>
+      </article>
+
+      <article class="room-card" id="family-three">
+        <div class="room-gallery" data-room-gallery aria-label="Фотографии семейного номера на три кровати">
+          <div class="room-gallery-viewport"><div class="room-gallery-track" data-room-track>
+            <button class="room-photo" type="button" data-room-photo aria-label="Открыть фотографию семейного номера"><img src="assets/images/rooms/img_4127.webp" alt="Семейный номер на три кровати" width="1350" height="1800" loading="lazy" decoding="async"></button>
+            <button class="room-photo" type="button" data-room-photo aria-label="Открыть фотографию номера"><img src="assets/images/rooms/img_4128.webp" alt="Телевизор и кресло в семейном номере" width="1350" height="1800" loading="lazy" decoding="async"></button>
+            <button class="room-photo" type="button" data-room-photo aria-label="Открыть фотографию зоны отдыха"><img src="assets/images/rooms/img_4129.webp" alt="Рабочее место и кресло в семейном номере" width="1350" height="1800" loading="lazy" decoding="async"></button>
+          </div></div>
+          <div class="room-gallery-bar"><span><b data-room-current>01</b> / 03</span><div class="room-gallery-controls"><button type="button" data-room-prev aria-label="Предыдущая фотография"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5m0 0 5-5m-5 5 5 5"/></svg></button><button type="button" data-room-next aria-label="Следующая фотография"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m0 0-5-5m5 5-5 5"/></svg></button></div></div>
+        </div>
+        <div class="room-card-body">
+          <div class="room-card-head"><p>Гостиница</p><span>10</span></div>
+          <h2>Семейная<span>Три кровати</span></h2>
+          <dl class="room-meta"><div><dt>Размещение</dt><dd>3 кровати</dd></div><div><dt>Стоимость</dt><dd>3 000 ₽<small>за номер</small></dd></div></dl>
+          <a class="room-action" href="tel:+79293386160"><span>Забронировать</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m0 0-5-5m5 5-5 5"/></svg></a>
+        </div>
       </article>
     </section>
 
@@ -182,6 +232,15 @@
       <a href="tel:+79293386160">+7 929 338-61-60</a>
     </section>
   </main>
+
+  <dialog class="room-lightbox" data-room-lightbox aria-label="Просмотр фотографий номера">
+    <button class="room-lightbox-close" type="button" data-room-lightbox-close aria-label="Закрыть фотографии">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg>
+    </button>
+    <button class="room-lightbox-arrow room-lightbox-prev" type="button" data-room-lightbox-prev aria-label="Предыдущая фотография"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5m0 0 5-5m-5 5 5 5"/></svg></button>
+    <figure><img data-room-lightbox-image alt=""><figcaption><span data-room-lightbox-current>01</span> / <span data-room-lightbox-total>01</span></figcaption></figure>
+    <button class="room-lightbox-arrow room-lightbox-next" type="button" data-room-lightbox-next aria-label="Следующая фотография"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m0 0-5-5m5 5-5 5"/></svg></button>
+  </dialog>
 
   <footer class="rooms-footer">
     <a class="footer-brand" href="index.html">
@@ -195,9 +254,10 @@
       <a href="index.html#contacts">Контакты</a>
     </nav>
     <div class="footer-bottom">
-      <p>© 2026 «Белые Ночи»</p>
+      <p>© <span data-year>2026</span> «Белые Ночи»</p>
       <p>Цены на сайте не являются публичной офертой</p>
     </div>
   </footer>
+  <script src="rooms.js?v=20260831-1"></script>
 </body>
 </html>
