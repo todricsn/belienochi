@@ -375,11 +375,21 @@ svg { fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: 
 }
 
 .room-card-description {
-  min-height: 5.2em;
-  margin: 28px 0 32px;
+  min-height: 0;
+  margin: 28px 0 12px;
   color: var(--ink);
   font-size: clamp(13px, 1.08vw, 16px);
   line-height: 1.65;
+}
+
+.room-price {
+  margin: 0 0 28px;
+  color: var(--ink);
+  font-family: var(--display);
+  font-size: clamp(27px, 2.2vw, 35px);
+  font-weight: 400;
+  letter-spacing: -.025em;
+  line-height: 1;
 }
 
 .room-card .room-meta {
@@ -422,7 +432,7 @@ svg { fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: 
   width: max-content;
   min-width: 190px;
   max-width: 100%;
-  margin-top: auto;
+  margin-top: 0;
   padding: 14px 24px;
   color: var(--accent-deep);
   background: transparent;
@@ -816,7 +826,8 @@ svg { fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: 
   .room-gallery { aspect-ratio: 4 / 3; }
   .room-card-body { min-height: 250px; padding: 18px 0 0; }
   .room-card h2 { margin: 0; font-size: clamp(34px, 10vw, 42px); }
-  .room-card-description { margin: 24px 0 28px; font-size: 13px; line-height: 1.65; }
+  .room-card-description { margin: 24px 0 10px; font-size: 13px; line-height: 1.65; }
+  .room-price { margin-bottom: 24px; font-size: 28px; }
   .room-meta div { padding-right: 15px; }
   .room-meta div + div { padding-left: 15px; }
   .room-meta dt { font-size: 8px; }
