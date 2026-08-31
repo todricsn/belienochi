@@ -21,6 +21,8 @@
     lightboxDetail: "[data-room-lightbox-detail]",
     lightboxMeta: "[data-room-lightbox-meta]",
     lightboxAction: "[data-room-lightbox-action]",
+    filter: "[data-room-filter]",
+    roomCard: "[data-room-type]",
   };
 
   const SWIPE_DISTANCE = 48;
@@ -538,12 +540,44 @@
     galleries.push(gallery);
   }
 
+  function initRoomFilters() {
+    const buttons = Array.from(document.querySelectorAll(SELECTORS.filter));
+    const roomCards = Array.from(document.querySelectorAll(SELECTORS.roomCard));
+
+    if (!buttons.length || !roomCards.length) return;
+
+    function showRoomType(type) {
+      roomCards.forEach(function (card) {
+        card.hidden = card.dataset.roomType !== type;
+      });
+
+      buttons.forEach(function (button) {
+        const isActive = button.dataset.roomFilter === type;
+        button.classList.toggle("is-active", isActive);
+        button.setAttribute("aria-pressed", String(isActive));
+      });
+    }
+
+    buttons.forEach(function (button) {
+      button.addEventListener("click", function () {
+        showRoomType(button.dataset.roomFilter);
+      });
+    });
+
+    const initialButton = buttons.find(function (button) {
+      return button.classList.contains("is-active");
+    });
+
+    showRoomType(initialButton ? initialButton.dataset.roomFilter : buttons[0].dataset.roomFilter);
+  }
+
   function init() {
     document.querySelectorAll("[data-year]").forEach(function (year) {
       year.textContent = String(new Date().getFullYear());
     });
 
     initLightbox();
+    initRoomFilters();
     document.querySelectorAll(SELECTORS.gallery).forEach(initGallery);
   }
 

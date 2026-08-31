@@ -163,12 +163,74 @@ svg { fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: 
   line-height: 1.75;
 }
 
+.rooms-catalog-section {
+  padding: clamp(48px, 5vw, 76px) var(--page-pad) clamp(76px, 8vw, 124px);
+  background: var(--paper);
+  border-top: 1px solid color-mix(in srgb, var(--accent) 34%, transparent);
+}
+
+.rooms-filter-bar {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 32px;
+  margin-bottom: clamp(48px, 5vw, 76px);
+  padding-bottom: 24px;
+  border-bottom: 1px solid color-mix(in srgb, var(--accent-deep) 28%, transparent);
+}
+
+.rooms-filter-title {
+  max-width: 480px;
+  margin: 0;
+  font-family: var(--display);
+  font-size: clamp(32px, 3.3vw, 50px);
+  letter-spacing: -.035em;
+  line-height: .95;
+}
+
+.rooms-filter {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(150px, 1fr));
+  border: 1px solid var(--accent-deep);
+  border-radius: 9px;
+  overflow: hidden;
+}
+
+.rooms-filter button {
+  min-height: 52px;
+  padding: 12px 22px;
+  color: var(--accent-deep);
+  background: transparent;
+  border: 0;
+  font-family: var(--body);
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: color .3s ease, background .3s ease;
+}
+
+.rooms-filter button + button {
+  border-left: 1px solid var(--accent-deep);
+}
+
+.rooms-filter button span {
+  margin-left: 9px;
+  font-size: 9px;
+  letter-spacing: .08em;
+}
+
+.rooms-filter button:hover,
+.rooms-filter button:focus-visible,
+.rooms-filter button.is-active {
+  color: var(--paper);
+  background: var(--accent-deep);
+}
+
 .rooms-catalog {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  column-gap: clamp(28px, 3.2vw, 50px);
-  row-gap: clamp(56px, 6vw, 92px);
-  padding: clamp(58px, 6vw, 92px) var(--page-pad) clamp(76px, 8vw, 124px);
+  column-gap: clamp(30px, 3.2vw, 48px);
+  row-gap: clamp(68px, 7vw, 108px);
 }
 
 .room-card {
@@ -183,11 +245,13 @@ svg { fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: 
   overflow: visible;
 }
 
+.room-card[hidden] { display: none; }
+
 .room-gallery {
   display: block;
   min-width: 0;
   min-height: 0;
-  aspect-ratio: 1.42 / 1;
+  aspect-ratio: 4 / 3;
   overflow: hidden;
   color: var(--paper);
   background: #2c2925;
@@ -277,17 +341,12 @@ svg { fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: 
   display: flex;
   flex-direction: column;
   min-width: 0;
-  min-height: 330px;
-  padding: 24px 0 0;
+  min-height: 290px;
+  padding: 20px 0 0;
 }
 
 .room-card-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 20px;
-  padding-bottom: 0;
-  border-bottom: 0;
+  display: none;
 }
 
 .room-card-head p,
@@ -302,25 +361,37 @@ svg { fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: 
 .room-card-head span { color: var(--accent-deep); }
 
 .room-card h2 {
-  margin: 22px 0 28px;
+  margin: 0;
   font-family: var(--display);
-  font-size: clamp(36px, 3.6vw, 56px);
+  font-size: clamp(36px, 3.25vw, 50px);
   font-weight: 400;
   letter-spacing: -.04em;
-  line-height: .9;
+  line-height: 1.02;
   text-wrap: balance;
 }
 
 .room-card h2 span {
-  display: block;
-  max-width: 440px;
-  margin-top: 12px;
-  font-family: var(--body);
-  font-size: clamp(9px, .78vw, 11px);
-  font-weight: 600;
-  letter-spacing: .13em;
-  line-height: 1.4;
-  text-transform: uppercase;
+  display: inline;
+  max-width: none;
+  margin: 0;
+  font: inherit;
+  letter-spacing: inherit;
+  line-height: inherit;
+  text-transform: none;
+}
+
+.room-card h2 span::before { content: " — "; }
+
+.room-card-description {
+  min-height: 5.2em;
+  margin: 28px 0 32px;
+  color: var(--ink);
+  font-size: clamp(13px, 1.08vw, 16px);
+  line-height: 1.65;
+}
+
+.room-card .room-meta {
+  display: none;
 }
 
 .room-meta {
@@ -355,25 +426,24 @@ svg { fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: 
 .room-action {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 24px;
-  width: min(240px, 100%);
+  justify-content: center;
+  width: max-content;
+  min-width: 190px;
+  max-width: 100%;
   margin-top: auto;
-  padding: 16px 22px;
+  padding: 14px 24px;
   color: var(--accent-deep);
   background: transparent;
   border: 1px solid var(--accent-deep);
-  border-radius: 13px;
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: .11em;
-  text-transform: uppercase;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0;
+  text-transform: none;
   transition: color .35s ease, background .35s ease, transform .35s ease;
 }
 
-.room-action svg { width: 20px; transition: transform .35s ease; }
 .room-action:hover { color: var(--paper); background: var(--accent-deep); transform: translateY(-2px); }
-.room-action:hover svg { transform: translateX(5px); }
 
 .room-lightbox {
   position: fixed;
@@ -716,10 +786,14 @@ svg { fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: 
 
   .rooms-hero .section-kicker { margin-bottom: 42px; }
   .rooms-intro { max-width: 690px; margin-left: 0; }
+  .rooms-filter-bar { align-items: stretch; }
+  .rooms-filter-title { max-width: 320px; }
+  .rooms-filter { grid-template-columns: repeat(2, minmax(125px, 1fr)); }
   .rooms-catalog { grid-template-columns: 1fr; }
-  .room-gallery { aspect-ratio: 1.55 / 1; }
-  .room-card-body { min-height: 300px; }
-  .room-card h2 { font-size: clamp(38px, 6vw, 52px); }
+  .room-gallery { aspect-ratio: 4 / 3; }
+  .room-card-body { min-height: 270px; }
+  .room-card h2 { font-size: clamp(38px, 7vw, 48px); }
+  .room-card-description { min-height: 0; }
   .room-meta dd { font-size: clamp(25px, 4vw, 34px); }
 }
 
@@ -740,21 +814,24 @@ svg { fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: 
   .rooms-hero h1 { font-size: clamp(48px, 15vw, 60px); line-height: .82; }
   .rooms-intro { margin-top: 28px; font-size: 14px; line-height: 1.7; }
 
-  .rooms-catalog { gap: 52px; padding-top: 38px; padding-bottom: 68px; }
+  .rooms-catalog-section { padding-top: 38px; padding-bottom: 68px; }
+  .rooms-filter-bar { display: block; margin-bottom: 42px; padding-bottom: 20px; }
+  .rooms-filter-title { margin-bottom: 22px; font-size: 34px; }
+  .rooms-filter { width: 100%; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .rooms-filter button { min-height: 48px; padding: 10px 12px; font-size: 11px; }
+  .rooms-catalog { gap: 60px; }
   .room-card { min-height: 0; border-radius: 0; }
   .room-gallery { aspect-ratio: 4 / 3; }
-  .room-card-body { min-height: 286px; padding: 20px 0 0; }
-  .room-card-head { gap: 12px; }
-  .room-card-head p,
-  .room-card-head span { font-size: 8px; }
-  .room-card h2 { margin: 18px 0 24px; font-size: clamp(34px, 10.5vw, 44px); }
-  .room-card h2 span { margin-top: 11px; font-size: 8px; }
+  .room-card-body { min-height: 250px; padding: 18px 0 0; }
+  .room-card h2 { margin: 0; font-size: clamp(34px, 10vw, 42px); }
+  .room-card h2 span { margin: 0; font: inherit; }
+  .room-card-description { margin: 24px 0 28px; font-size: 13px; line-height: 1.65; }
   .room-meta div { padding-right: 15px; }
   .room-meta div + div { padding-left: 15px; }
   .room-meta dt { font-size: 8px; }
   .room-meta dd { font-size: clamp(21px, 6.5vw, 27px); }
   .room-meta small { font-size: 8px; }
-  .room-action { width: 100%; }
+  .room-action { width: max-content; min-width: 180px; }
 
   .room-lightbox {
     width: calc(100vw - 20px);

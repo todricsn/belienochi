@@ -7,7 +7,7 @@
   <meta name="theme-color" content="#ffffff">
   <title>Номера — Белые Ночи</title>
   <link rel="icon" href="assets/images/logo-heritage.png">
-  <link rel="stylesheet" href="rooms.css?v=20260831-2">
+  <link rel="stylesheet" href="rooms.css?v=20260831-3">
 </head>
 <body>
   <header class="rooms-header">
@@ -29,8 +29,17 @@
       <p class="rooms-intro">Выберите подходящий вариант, посмотрите фотографии и стоимость. Чтобы уточнить наличие и забронировать номер или место в хостеле, позвоните администратору.</p>
     </section>
 
-    <section class="rooms-catalog" aria-label="Номера гостиницы и места в хостеле">
-      <article class="room-card" id="standard-twin-1">
+    <section class="rooms-catalog-section" aria-labelledby="rooms-filter-title">
+      <div class="rooms-filter-bar">
+        <p class="rooms-filter-title" id="rooms-filter-title">Выберите тип размещения</p>
+        <div class="rooms-filter" role="group" aria-label="Тип размещения">
+          <button class="is-active" type="button" data-room-filter="hotel" aria-pressed="true">Гостиница <span>08</span></button>
+          <button type="button" data-room-filter="hostel" aria-pressed="false">Хостел <span>02</span></button>
+        </div>
+      </div>
+
+      <div class="rooms-catalog" data-room-catalog aria-live="polite">
+      <article class="room-card" id="standard-twin-1" data-room-type="hotel">
         <div class="room-gallery" data-room-gallery aria-label="Фотографии стандартного номера с двумя кроватями">
           <div class="room-gallery-viewport">
             <div class="room-gallery-track" data-room-track>
@@ -45,13 +54,14 @@
         </div>
         <div class="room-card-body">
           <div class="room-card-head"><p>Гостиница</p><span>01</span></div>
-          <h2>Стандартная<span>Две отдельные кровати</span></h2>
+          <h2>Стандартная <span>Две отдельные кровати</span></h2>
+          <p class="room-card-description">Отдельный номер с двумя односпальными кроватями. Стоимость — 2 500 ₽ за номер.</p>
           <dl class="room-meta"><div><dt>Размещение</dt><dd>2 кровати</dd></div><div><dt>Стоимость</dt><dd>2 500 ₽<small>за номер</small></dd></div></dl>
-          <a class="room-action" href="tel:+79293386160"><span>Забронировать</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m0 0-5-5m5 5-5 5"/></svg></a>
+          <a class="room-action" href="tel:+79293386160"><span>Забронировать</span></a>
         </div>
       </article>
 
-      <article class="room-card" id="standard-double-1">
+      <article class="room-card" id="standard-double-1" data-room-type="hotel">
         <div class="room-gallery" data-room-gallery aria-label="Фотографии стандартного номера с большой кроватью">
           <div class="room-gallery-viewport"><div class="room-gallery-track" data-room-track>
             <button class="room-photo" type="button" data-room-photo aria-label="Открыть фотографию спальни"><img src="assets/images/rooms/img_4052.webp" alt="Стандартный номер с большой кроватью" width="1350" height="1800" loading="lazy" decoding="async"></button>
@@ -63,13 +73,14 @@
         </div>
         <div class="room-card-body">
           <div class="room-card-head"><p>Гостиница</p><span>02</span></div>
-          <h2>Стандартная<span>Большая кровать</span></h2>
+          <h2>Стандартная <span>Большая кровать</span></h2>
+          <p class="room-card-description">Отдельный номер с большой кроватью. Стоимость — 2 200 ₽ за номер.</p>
           <dl class="room-meta"><div><dt>Размещение</dt><dd>Большая кровать</dd></div><div><dt>Стоимость</dt><dd>2 200 ₽<small>за номер</small></dd></div></dl>
-          <a class="room-action" href="tel:+79293386160"><span>Забронировать</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m0 0-5-5m5 5-5 5"/></svg></a>
+          <a class="room-action" href="tel:+79293386160"><span>Забронировать</span></a>
         </div>
       </article>
 
-      <article class="room-card" id="standard-twin-2">
+      <article class="room-card" id="standard-twin-2" data-room-type="hotel">
         <div class="room-gallery" data-room-gallery aria-label="Фотографии стандартного номера с двумя кроватями">
           <div class="room-gallery-viewport"><div class="room-gallery-track" data-room-track>
             <button class="room-photo" type="button" data-room-photo aria-label="Открыть фотографию спальни"><img src="assets/images/rooms/img_4056.webp" alt="Стандартный номер с двумя отдельными кроватями" width="1350" height="1800" loading="lazy" decoding="async"></button>
@@ -82,13 +93,14 @@
         </div>
         <div class="room-card-body">
           <div class="room-card-head"><p>Гостиница</p><span>03</span></div>
-          <h2>Стандартная<span>Две отдельные кровати</span></h2>
+          <h2>Стандартная <span>Две отдельные кровати</span></h2>
+          <p class="room-card-description">Отдельный номер с двумя односпальными кроватями. Стоимость — 2 500 ₽ за номер.</p>
           <dl class="room-meta"><div><dt>Размещение</dt><dd>2 кровати</dd></div><div><dt>Стоимость</dt><dd>2 500 ₽<small>за номер</small></dd></div></dl>
-          <a class="room-action" href="tel:+79293386160"><span>Забронировать</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m0 0-5-5m5 5-5 5"/></svg></a>
+          <a class="room-action" href="tel:+79293386160"><span>Забронировать</span></a>
         </div>
       </article>
 
-      <article class="room-card" id="suite">
+      <article class="room-card" id="suite" data-room-type="hotel">
         <div class="room-gallery" data-room-gallery aria-label="Фотографии номера люкс">
           <div class="room-gallery-viewport"><div class="room-gallery-track" data-room-track>
             <button class="room-photo" type="button" data-room-photo aria-label="Открыть фотографию люкса"><img src="assets/images/rooms/img_4074.webp" alt="Интерьер номера люкс" width="1350" height="1800" loading="lazy" decoding="async"></button>
@@ -104,13 +116,14 @@
         </div>
         <div class="room-card-body">
           <div class="room-card-head"><p>Гостиница</p><span>04</span></div>
-          <h2>Люкс<span>Большая кровать и диван</span></h2>
+          <h2>Люкс <span>Большая кровать и диван</span></h2>
+          <p class="room-card-description">Отдельный номер с большой кроватью и диваном. Стоимость — 3 500 ₽ за номер.</p>
           <dl class="room-meta"><div><dt>Размещение</dt><dd>Кровать и диван</dd></div><div><dt>Стоимость</dt><dd>3 500 ₽<small>за номер</small></dd></div></dl>
-          <a class="room-action" href="tel:+79293386160"><span>Забронировать</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m0 0-5-5m5 5-5 5"/></svg></a>
+          <a class="room-action" href="tel:+79293386160"><span>Забронировать</span></a>
         </div>
       </article>
 
-      <article class="room-card" id="standard-double-2">
+      <article class="room-card" id="standard-double-2" data-room-type="hotel">
         <div class="room-gallery" data-room-gallery aria-label="Фотографии стандартного номера с большой кроватью">
           <div class="room-gallery-viewport"><div class="room-gallery-track" data-room-track>
             <button class="room-photo" type="button" data-room-photo aria-label="Открыть фотографию спальни"><img src="assets/images/rooms/img_4087.webp" alt="Стандартный номер с большой кроватью" width="1350" height="1800" loading="lazy" decoding="async"></button>
@@ -123,13 +136,14 @@
         </div>
         <div class="room-card-body">
           <div class="room-card-head"><p>Гостиница</p><span>05</span></div>
-          <h2>Стандартная<span>Большая кровать</span></h2>
+          <h2>Стандартная <span>Большая кровать</span></h2>
+          <p class="room-card-description">Отдельный номер с большой кроватью. Стоимость — 2 500 ₽ за номер.</p>
           <dl class="room-meta"><div><dt>Размещение</dt><dd>Большая кровать</dd></div><div><dt>Стоимость</dt><dd>2 500 ₽<small>за номер</small></dd></div></dl>
-          <a class="room-action" href="tel:+79293386160"><span>Забронировать</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m0 0-5-5m5 5-5 5"/></svg></a>
+          <a class="room-action" href="tel:+79293386160"><span>Забронировать</span></a>
         </div>
       </article>
 
-      <article class="room-card" id="hostel-eight">
+      <article class="room-card" id="hostel-eight" data-room-type="hostel">
         <div class="room-gallery" data-room-gallery aria-label="Фотографии хостела на восемь кроватей">
           <div class="room-gallery-viewport"><div class="room-gallery-track" data-room-track>
             <button class="room-photo" type="button" data-room-photo aria-label="Открыть фотографию хостела"><img src="assets/images/rooms/img_4091.webp" alt="Комната хостела на восемь кроватей" width="1350" height="1800" loading="lazy" decoding="async"></button>
@@ -143,13 +157,14 @@
         </div>
         <div class="room-card-body">
           <div class="room-card-head"><p>Хостел</p><span>06</span></div>
-          <h2>Хостел<span>Восемь кроватей</span></h2>
+          <h2>Хостел <span>Восемь кроватей</span></h2>
+          <p class="room-card-description">Место в общей комнате на восемь кроватей. Стоимость — 850 ₽ за место.</p>
           <dl class="room-meta"><div><dt>Размещение</dt><dd>8 кроватей</dd></div><div><dt>Стоимость</dt><dd>850 ₽<small>за место</small></dd></div></dl>
-          <a class="room-action" href="tel:+79293386160"><span>Забронировать</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m0 0-5-5m5 5-5 5"/></svg></a>
+          <a class="room-action" href="tel:+79293386160"><span>Забронировать</span></a>
         </div>
       </article>
 
-      <article class="room-card" id="family-four">
+      <article class="room-card" id="family-four" data-room-type="hotel">
         <div class="room-gallery" data-room-gallery aria-label="Фотографии семейного номера на четыре кровати">
           <div class="room-gallery-viewport"><div class="room-gallery-track" data-room-track>
             <button class="room-photo" type="button" data-room-photo aria-label="Открыть фотографию семейного номера"><img src="assets/images/rooms/img_4097.webp" alt="Семейный номер на четыре кровати" width="1350" height="1800" loading="lazy" decoding="async"></button>
@@ -162,13 +177,14 @@
         </div>
         <div class="room-card-body">
           <div class="room-card-head"><p>Гостиница</p><span>07</span></div>
-          <h2>Семейная<span>Четыре кровати</span></h2>
+          <h2>Семейная <span>Четыре кровати</span></h2>
+          <p class="room-card-description">Отдельный семейный номер на четыре кровати. Стоимость — 3 200 ₽ за номер.</p>
           <dl class="room-meta"><div><dt>Размещение</dt><dd>4 кровати</dd></div><div><dt>Стоимость</dt><dd>3 200 ₽<small>за номер</small></dd></div></dl>
-          <a class="room-action" href="tel:+79293386160"><span>Забронировать</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m0 0-5-5m5 5-5 5"/></svg></a>
+          <a class="room-action" href="tel:+79293386160"><span>Забронировать</span></a>
         </div>
       </article>
 
-      <article class="room-card" id="hostel-four">
+      <article class="room-card" id="hostel-four" data-room-type="hostel">
         <div class="room-gallery" data-room-gallery aria-label="Фотографии хостела на четыре кровати">
           <div class="room-gallery-viewport"><div class="room-gallery-track" data-room-track>
             <button class="room-photo" type="button" data-room-photo aria-label="Открыть фотографию хостела"><img src="assets/images/rooms/img_4104.webp" alt="Комната хостела на четыре кровати" width="1350" height="1800" loading="lazy" decoding="async"></button>
@@ -181,13 +197,14 @@
         </div>
         <div class="room-card-body">
           <div class="room-card-head"><p>Хостел</p><span>08</span></div>
-          <h2>Хостел<span>Четыре кровати</span></h2>
+          <h2>Хостел <span>Четыре кровати</span></h2>
+          <p class="room-card-description">Место в общей комнате на четыре кровати. Стоимость — 850 ₽ за место.</p>
           <dl class="room-meta"><div><dt>Размещение</dt><dd>4 кровати</dd></div><div><dt>Стоимость</dt><dd>850 ₽<small>за место</small></dd></div></dl>
-          <a class="room-action" href="tel:+79293386160"><span>Забронировать</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m0 0-5-5m5 5-5 5"/></svg></a>
+          <a class="room-action" href="tel:+79293386160"><span>Забронировать</span></a>
         </div>
       </article>
 
-      <article class="room-card" id="junior-suite">
+      <article class="room-card" id="junior-suite" data-room-type="hotel">
         <div class="room-gallery" data-room-gallery aria-label="Фотографии полулюкса">
           <div class="room-gallery-viewport"><div class="room-gallery-track" data-room-track>
             <button class="room-photo" type="button" data-room-photo aria-label="Открыть фотографию полулюкса"><img src="assets/images/rooms/img_4112.webp" alt="Интерьер полулюкса" width="1350" height="1800" loading="lazy" decoding="async"></button>
@@ -202,12 +219,13 @@
         <div class="room-card-body">
           <div class="room-card-head"><p>Гостиница</p><span>09</span></div>
           <h2>Полулюкс</h2>
+          <p class="room-card-description">Отдельный номер категории «Полулюкс». Стоимость — 2 500 ₽ за номер.</p>
           <dl class="room-meta"><div><dt>Категория</dt><dd>Полулюкс</dd></div><div><dt>Стоимость</dt><dd>2 500 ₽<small>за номер</small></dd></div></dl>
-          <a class="room-action" href="tel:+79293386160"><span>Забронировать</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m0 0-5-5m5 5-5 5"/></svg></a>
+          <a class="room-action" href="tel:+79293386160"><span>Забронировать</span></a>
         </div>
       </article>
 
-      <article class="room-card" id="family-three">
+      <article class="room-card" id="family-three" data-room-type="hotel">
         <div class="room-gallery" data-room-gallery aria-label="Фотографии семейного номера на три кровати">
           <div class="room-gallery-viewport"><div class="room-gallery-track" data-room-track>
             <button class="room-photo" type="button" data-room-photo aria-label="Открыть фотографию семейного номера"><img src="assets/images/rooms/img_4127.webp" alt="Семейный номер на три кровати" width="1350" height="1800" loading="lazy" decoding="async"></button>
@@ -218,11 +236,13 @@
         </div>
         <div class="room-card-body">
           <div class="room-card-head"><p>Гостиница</p><span>10</span></div>
-          <h2>Семейная<span>Три кровати</span></h2>
+          <h2>Семейная <span>Три кровати</span></h2>
+          <p class="room-card-description">Отдельный семейный номер на три кровати. Стоимость — 3 000 ₽ за номер.</p>
           <dl class="room-meta"><div><dt>Размещение</dt><dd>3 кровати</dd></div><div><dt>Стоимость</dt><dd>3 000 ₽<small>за номер</small></dd></div></dl>
-          <a class="room-action" href="tel:+79293386160"><span>Забронировать</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m0 0-5-5m5 5-5 5"/></svg></a>
+          <a class="room-action" href="tel:+79293386160"><span>Забронировать</span></a>
         </div>
       </article>
+      </div>
     </section>
 
     <section class="rooms-cta" aria-labelledby="rooms-cta-title">
@@ -277,6 +297,6 @@
       <p>Цены на сайте не являются публичной офертой</p>
     </div>
   </footer>
-  <script src="rooms.js?v=20260831-2"></script>
+  <script src="rooms.js?v=20260831-3"></script>
 </body>
 </html>
