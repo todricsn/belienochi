@@ -15,6 +15,12 @@
     lightboxNext: "[data-room-lightbox-next]",
     lightboxCurrent: "[data-room-lightbox-current]",
     lightboxTotal: "[data-room-lightbox-total]",
+    lightboxThumbs: "[data-room-lightbox-thumbs]",
+    lightboxCategory: "[data-room-lightbox-category]",
+    lightboxTitle: "[data-room-lightbox-title]",
+    lightboxDetail: "[data-room-lightbox-detail]",
+    lightboxMeta: "[data-room-lightbox-meta]",
+    lightboxAction: "[data-room-lightbox-action]",
   };
 
   const SWIPE_DISTANCE = 48;
@@ -30,6 +36,12 @@
   let lightboxNext = null;
   let lightboxCurrent = null;
   let lightboxTotal = null;
+  let lightboxThumbs = null;
+  let lightboxCategory = null;
+  let lightboxTitle = null;
+  let lightboxDetail = null;
+  let lightboxMeta = null;
+  let lightboxAction = null;
   let activeLightboxGallery = null;
   let activeLightboxIndex = 0;
   let lightboxOpen = false;
@@ -67,6 +79,137 @@
       image.src ||
       ""
     );
+  }
+
+  function normalizeText(value) {
+    return String(value || "").replace(/\s+/g, " ").trim();
+  }
+
+  function getDirectText(element) {
+    if (!element) return "";
+
+    return normalizeText(
+      Array.from(element.childNodes)
+        .filter(function (node) {
+          return node.nodeType === 3;
+        })
+        .map(function (node) {
+          return node.textContent;
+        })
+        .join(" ")
+    );
+  }
+
+  function setOptionalText(element, value) {
+    if (!element) return;
+
+    const text = normalizeText(value);
+    element.textContent = text;
+    element.hidden = !text;
+  }
+
+  function populateLightboxDetails(roomCard) {
+    if (!roomCard) return;
+
+    const cardCategory = roomCard.querySelector(".room-card-head p");
+    const cardHeading = roomCard.querySelector("h2");
+    const cardDetail = cardHeading ? cardHeading.querySelector("span") : null;
+    const cardMeta = roomCard.querySelector(".room-meta");
+    const cardAction = roomCard.querySelector(".room-action");
+
+    setOptionalText(lightboxCategory, cardCategory ? cardCategory.textContent : "");
+    setOptionalText(lightboxTitle, getDirectText(cardHeading));
+    setOptionalText(lightboxDetail, cardDetail ? cardDetail.textContent : "");
+
+    if (lightboxMeta) {
+      const clonedMeta = cardMeta
+        ? Array.from(cardMeta.childNodes).map(function (node) {
+            return node.cloneNode(true);
+          })
+        : [];
+
+      lightboxMeta.replaceChildren.apply(lightboxMeta, clonedMeta);
+      lightboxMeta.hidden = !clonedMeta.length;
+    }
+
+    if (lightboxAction) {
+      const actionLabel = cardAction ? cardAction.querySelector("span") : null;
+      const modalActionLabel = lightboxAction.querySelector("span");
+      const actionText = normalizeText(
+        actionLabel ? actionLabel.textContent : cardAction ? cardAction.textContent : ""
+      );
+      const actionHref = cardAction ? cardAction.getAttribute("href") : "";
+
+      if (actionHref) {
+        lightboxAction.setAttribute("href", actionHref);
+      } else {
+        lightboxAction.removeAttribute("href");
+      }
+
+      if (modalActionLabel) {
+        modalActionLabel.textContent = actionText;
+      } else {
+        lightboxAction.textContent = actionText;
+      }
+
+      lightboxAction.hidden = !cardAction || !actionText;
+    }
+  }
+
+  function renderLightboxThumbnails(gallery) {
+    if (!lightboxThumbs) return;
+
+    const thumbnails = gallery
+      ? gallery.photos.map(function (photo, index) {
+          const image = getPhotoImage(photo);
+          const thumbnail = document.createElement("button");
+          const thumbnailImage = document.createElement("img");
+
+          thumbnail.type = "button";
+          thumbnail.className = "room-lightbox-thumb";
+          thumbnail.dataset.roomLightboxThumb = String(index);
+          thumbnail.setAttribute("aria-label", `Показать фотографию ${index + 1}`);
+
+          if (image) {
+            thumbnailImage.src = getPhotoSource(photo, image);
+            thumbnailImage.alt = "";
+            thumbnailImage.loading = "lazy";
+            thumbnailImage.decoding = "async";
+          }
+
+          thumbnail.appendChild(thumbnailImage);
+          return thumbnail;
+        })
+      : [];
+
+    lightboxThumbs.replaceChildren.apply(lightboxThumbs, thumbnails);
+    lightboxThumbs.hidden = !thumbnails.length;
+  }
+
+  function updateLightboxThumbnailState() {
+    if (!lightboxThumbs) return;
+
+    let activeThumbnail = null;
+
+    lightboxThumbs.querySelectorAll("[data-room-lightbox-thumb]").forEach(function (thumb) {
+      const isActive = Number(thumb.dataset.roomLightboxThumb) === activeLightboxIndex;
+      thumb.classList.toggle("is-active", isActive);
+
+      if (isActive) {
+        activeThumbnail = thumb;
+        thumb.setAttribute("aria-current", "true");
+      } else {
+        thumb.removeAttribute("aria-current");
+      }
+    });
+
+    if (activeThumbnail) {
+      activeThumbnail.scrollIntoView({
+        behavior: prefersReducedMotion && prefersReducedMotion.matches ? "auto" : "smooth",
+        block: "nearest",
+        inline: "center",
+      });
+    }
   }
 
   function updateGallery(gallery, nextIndex) {
@@ -175,16 +318,20 @@
       lightboxTotal.textContent = String(activeLightboxGallery.photos.length).padStart(2, "0");
     }
 
+    updateLightboxThumbnailState();
+
     const hasMultiplePhotos = activeLightboxGallery.photos.length > 1;
     setControlState(lightboxPrevious, !hasMultiplePhotos);
     setControlState(lightboxNext, !hasMultiplePhotos);
   }
 
-  function openLightbox(gallery, index, opener) {
+  function openLightbox(gallery, index, opener, roomCard) {
     if (!lightbox || !lightboxImage || !gallery || !gallery.photos.length) return;
 
     activeLightboxGallery = gallery;
     lightboxOpener = opener || null;
+    populateLightboxDetails(roomCard || gallery.root.closest(".room-card"));
+    renderLightboxThumbnails(gallery);
     showLightboxImage(index);
     lightboxOpen = true;
     lightbox.hidden = false;
@@ -220,6 +367,9 @@
       lightboxImage.alt = "";
     }
 
+    if (lightboxThumbs) lightboxThumbs.replaceChildren();
+    if (lightboxMeta) lightboxMeta.replaceChildren();
+
     const opener = lightboxOpener;
     activeLightboxGallery = null;
     lightboxOpener = null;
@@ -247,6 +397,12 @@
     lightboxNext = lightbox.querySelector(SELECTORS.lightboxNext);
     lightboxCurrent = lightbox.querySelector(SELECTORS.lightboxCurrent);
     lightboxTotal = lightbox.querySelector(SELECTORS.lightboxTotal);
+    lightboxThumbs = lightbox.querySelector(SELECTORS.lightboxThumbs);
+    lightboxCategory = lightbox.querySelector(SELECTORS.lightboxCategory);
+    lightboxTitle = lightbox.querySelector(SELECTORS.lightboxTitle);
+    lightboxDetail = lightbox.querySelector(SELECTORS.lightboxDetail);
+    lightboxMeta = lightbox.querySelector(SELECTORS.lightboxMeta);
+    lightboxAction = lightbox.querySelector(SELECTORS.lightboxAction);
 
     if (!lightboxImage) return;
 
@@ -264,6 +420,15 @@
     if (lightboxNext) {
       lightboxNext.addEventListener("click", function () {
         showLightboxImage(activeLightboxIndex + 1);
+      });
+    }
+
+    if (lightboxThumbs) {
+      lightboxThumbs.addEventListener("click", function (event) {
+        const thumbnail = event.target.closest("[data-room-lightbox-thumb]");
+        if (!thumbnail || !lightboxThumbs.contains(thumbnail)) return;
+
+        showLightboxImage(Number(thumbnail.dataset.roomLightboxThumb));
       });
     }
 
@@ -349,7 +514,7 @@
 
         event.preventDefault();
         updateGallery(gallery, index);
-        openLightbox(gallery, index, photo);
+        openLightbox(gallery, index, photo, photo.closest(".room-card"));
       });
     });
 

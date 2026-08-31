@@ -7,7 +7,7 @@
   <meta name="theme-color" content="#ffffff">
   <title>Номера — Белые Ночи</title>
   <link rel="icon" href="assets/images/logo-heritage.png">
-  <link rel="stylesheet" href="rooms.css?v=20260831-1">
+  <link rel="stylesheet" href="rooms.css?v=20260831-2">
 </head>
 <body>
   <header class="rooms-header">
@@ -145,7 +145,7 @@
           <div class="room-card-head"><p>Хостел</p><span>06</span></div>
           <h2>Хостел<span>Восемь кроватей</span></h2>
           <dl class="room-meta"><div><dt>Размещение</dt><dd>8 кроватей</dd></div><div><dt>Стоимость</dt><dd>850 ₽<small>за место</small></dd></div></dl>
-          <a class="room-action" href="tel:+79293386160"><span>Забронировать место</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m0 0-5-5m5 5-5 5"/></svg></a>
+          <a class="room-action" href="tel:+79293386160"><span>Забронировать</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m0 0-5-5m5 5-5 5"/></svg></a>
         </div>
       </article>
 
@@ -183,7 +183,7 @@
           <div class="room-card-head"><p>Хостел</p><span>08</span></div>
           <h2>Хостел<span>Четыре кровати</span></h2>
           <dl class="room-meta"><div><dt>Размещение</dt><dd>4 кровати</dd></div><div><dt>Стоимость</dt><dd>850 ₽<small>за место</small></dd></div></dl>
-          <a class="room-action" href="tel:+79293386160"><span>Забронировать место</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m0 0-5-5m5 5-5 5"/></svg></a>
+          <a class="room-action" href="tel:+79293386160"><span>Забронировать</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m0 0-5-5m5 5-5 5"/></svg></a>
         </div>
       </article>
 
@@ -233,13 +233,32 @@
     </section>
   </main>
 
-  <dialog class="room-lightbox" data-room-lightbox aria-label="Просмотр фотографий номера">
+  <dialog class="room-lightbox" data-room-lightbox aria-labelledby="room-lightbox-title">
     <button class="room-lightbox-close" type="button" data-room-lightbox-close aria-label="Закрыть фотографии">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg>
     </button>
-    <button class="room-lightbox-arrow room-lightbox-prev" type="button" data-room-lightbox-prev aria-label="Предыдущая фотография"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5m0 0 5-5m-5 5 5 5"/></svg></button>
-    <figure><img data-room-lightbox-image alt=""><figcaption><span data-room-lightbox-current>01</span> / <span data-room-lightbox-total>01</span></figcaption></figure>
-    <button class="room-lightbox-arrow room-lightbox-next" type="button" data-room-lightbox-next aria-label="Следующая фотография"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m0 0-5-5m5 5-5 5"/></svg></button>
+    <div class="room-lightbox-layout">
+      <div class="room-lightbox-media">
+        <div class="room-lightbox-stage">
+          <button class="room-lightbox-arrow room-lightbox-prev" type="button" data-room-lightbox-prev aria-label="Предыдущая фотография"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5m0 0 5-5m-5 5 5 5"/></svg></button>
+          <figure><img data-room-lightbox-image alt=""><figcaption><span data-room-lightbox-current>01</span> / <span data-room-lightbox-total>01</span></figcaption></figure>
+          <button class="room-lightbox-arrow room-lightbox-next" type="button" data-room-lightbox-next aria-label="Следующая фотография"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m0 0-5-5m5 5-5 5"/></svg></button>
+        </div>
+        <div class="room-lightbox-thumbs" data-room-lightbox-thumbs aria-label="Миниатюры фотографий"></div>
+      </div>
+
+      <div class="room-lightbox-details">
+        <p class="room-lightbox-category" data-room-lightbox-category>Гостиница</p>
+        <h2 id="room-lightbox-title" data-room-lightbox-title>Номер</h2>
+        <p class="room-lightbox-detail" data-room-lightbox-detail></p>
+        <dl class="room-lightbox-meta" data-room-lightbox-meta></dl>
+        <a class="room-lightbox-action" data-room-lightbox-action href="tel:+79293386160">
+          <span>Забронировать</span>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m0 0-5-5m5 5-5 5"/></svg>
+        </a>
+        <p class="room-lightbox-note">Позвоните — администратор уточнит наличие и поможет с бронированием.</p>
+      </div>
+    </div>
   </dialog>
 
   <footer class="rooms-footer">
@@ -258,6 +277,6 @@
       <p>Цены на сайте не являются публичной офертой</p>
     </div>
   </footer>
-  <script src="rooms.js?v=20260831-1"></script>
+  <script src="rooms.js?v=20260831-2"></script>
 </body>
 </html>
