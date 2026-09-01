@@ -7,7 +7,7 @@
   <meta name="theme-color" content="#ffffff">
   <title>Белые Ночи — гостиница и хостел в Красноярске</title>
   <link rel="icon" href="assets/images/logo-heritage.png">
-  <link rel="stylesheet" href="styles.css?v=20260824-1">
+  <link rel="stylesheet" href="styles.css?v=20260901-1">
 </head>
 <body>
   <div class="page-loader" aria-hidden="true">
@@ -445,7 +445,10 @@
     <button class="photo-lightbox-nav photo-lightbox-prev" type="button" data-lightbox-prev aria-label="Предыдущая фотография" aria-controls="gallery-lightbox-image">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
     </button>
-    <img id="gallery-lightbox-image" data-lightbox-image alt="">
+    <div class="photo-lightbox-stage" data-lightbox-stage>
+      <img id="gallery-lightbox-image" data-lightbox-image alt="">
+      <img class="photo-lightbox-transition-image" data-lightbox-transition-image alt="" hidden>
+    </div>
     <button class="photo-lightbox-nav photo-lightbox-next" type="button" data-lightbox-next aria-label="Следующая фотография" aria-controls="gallery-lightbox-image">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg>
     </button>
@@ -484,6 +487,6 @@
     </div>
   </footer>
 
-  <script src="script.js"></script>
+  <script src="script.js?v=20260901-1"></script>
 </body>
 </html>

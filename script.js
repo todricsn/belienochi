@@ -87,6 +87,7 @@ if (gallery) {
   const nextButton = gallery.querySelector('[data-gallery-next]');
   const lightbox = document.querySelector('[data-gallery-lightbox]');
   const lightboxImage = lightbox?.querySelector('[data-lightbox-image]');
+  const lightboxTransitionImage = lightbox?.querySelector('[data-lightbox-transition-image]');
   const lightboxClose = lightbox?.querySelector('[data-lightbox-close]');
   const lightboxPrevious = lightbox?.querySelector('[data-lightbox-prev]');
   const lightboxNext = lightbox?.querySelector('[data-lightbox-next]');
@@ -121,6 +122,11 @@ if (gallery) {
     let resizeFrame = 0;
     let lightboxIndex = 0;
     let lightboxTransitionTimer = 0;
+    let lightboxDialogTransitionTimer = 0;
+    let lightboxImageRequestId = 0;
+    let renderedLightboxIndex = 0;
+    let lightboxTransitionTargetIndex = null;
+    let lightboxOpener = null;
     let lightboxPointerId = null;
     let lightboxPointerStartX = 0;
     let lightboxPointerStartY = 0;
@@ -171,57 +177,226 @@ if (gallery) {
       isAnimating = true;
       updateSlideState();
       positionGallery(true);
-      transitionTimer = window.setTimeout(settleLoop, 380);
+      transitionTimer = window.setTimeout(settleLoop, 620);
     };
 
-    const renderLightbox = (animate = true) => {
+    const lightboxReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const lightboxAnimationClasses = [
+      'is-sliding-out-next',
+      'is-sliding-in-next',
+      'is-sliding-out-prev',
+      'is-sliding-in-prev',
+    ];
+
+    const clearLightboxImageTransition = (useIncomingImage) => {
+      window.clearTimeout(lightboxTransitionTimer);
+      lightboxTransitionTimer = 0;
+      lightboxImage?.classList.remove(...lightboxAnimationClasses);
+
+      if (!lightboxTransitionImage) return;
+
+      lightboxTransitionImage.onload = null;
+      lightboxTransitionImage.onerror = null;
+
+      if (
+        useIncomingImage &&
+        !lightboxTransitionImage.hidden &&
+        lightboxTransitionImage.complete &&
+        lightboxTransitionImage.naturalWidth > 0 &&
+        lightboxTransitionImage.getAttribute('src') &&
+        lightboxImage
+      ) {
+        lightboxImage.src = lightboxTransitionImage.src;
+        lightboxImage.alt = lightboxTransitionImage.alt;
+        if (Number.isInteger(lightboxTransitionTargetIndex)) {
+          renderedLightboxIndex = lightboxTransitionTargetIndex;
+        }
+      }
+
+      lightboxTransitionImage.classList.remove(...lightboxAnimationClasses);
+      lightboxTransitionImage.hidden = true;
+      lightboxTransitionImage.removeAttribute('src');
+      lightboxTransitionImage.alt = '';
+      lightboxTransitionTargetIndex = null;
+    };
+
+    const finishLightboxImageTransition = () => clearLightboxImageTransition(true);
+
+    const updateLightboxCounter = () => {
+      if (lightboxCurrent) lightboxCurrent.textContent = String(lightboxIndex + 1);
+    };
+
+    const preloadLightboxNeighbors = () => {
+      [
+        (lightboxIndex - 1 + originalSlides.length) % originalSlides.length,
+        (lightboxIndex + 1) % originalSlides.length,
+      ].forEach((index) => {
+        const neighborImage = originalSlides[index]?.querySelector('img');
+        if (!neighborImage) return;
+        const preloadImage = new Image();
+        preloadImage.src = neighborImage.currentSrc || neighborImage.src;
+      });
+    };
+
+    const renderLightbox = (animate = true, direction = 0) => {
       if (!lightbox || !lightboxImage) return;
+
+      const imageRequestId = ++lightboxImageRequestId;
+      clearLightboxImageTransition(true);
+
       const sourceImage = originalSlides[lightboxIndex]?.querySelector('img');
       if (!sourceImage) return;
 
-      const applyImage = () => {
-        lightboxImage.src = sourceImage.currentSrc || sourceImage.src;
-        lightboxImage.alt = sourceImage.alt;
-        if (lightboxCurrent) lightboxCurrent.textContent = String(lightboxIndex + 1);
-        lightbox.classList.remove('is-changing');
+      const source = sourceImage.currentSrc || sourceImage.src;
+      const alt = sourceImage.alt;
+      const currentSource = lightboxImage.currentSrc || lightboxImage.src;
+      const shouldAnimate = Boolean(
+        animate &&
+        direction &&
+        lightbox.open &&
+        lightboxTransitionImage &&
+        lightboxImage.getAttribute('src') &&
+        source &&
+        source !== currentSource &&
+        !lightboxReducedMotion.matches
+      );
 
-        const neighborIndexes = [
-          (lightboxIndex - 1 + originalSlides.length) % originalSlides.length,
-          (lightboxIndex + 1) % originalSlides.length,
-        ];
-        neighborIndexes.forEach((index) => {
-          const neighborImage = originalSlides[index]?.querySelector('img');
-          if (!neighborImage) return;
-          const preloadImage = new Image();
-          preloadImage.src = neighborImage.currentSrc || neighborImage.src;
-        });
-      };
+      updateLightboxCounter();
+      preloadLightboxNeighbors();
 
-      window.clearTimeout(lightboxTransitionTimer);
-      if (!animate) {
-        applyImage();
+      if (!shouldAnimate) {
+        lightboxImage.src = source;
+        lightboxImage.alt = alt;
+        renderedLightboxIndex = lightboxIndex;
         return;
       }
 
-      lightbox.classList.add('is-changing');
-      lightboxTransitionTimer = window.setTimeout(applyImage, 150);
+      lightboxTransitionImage.src = source;
+      lightboxTransitionImage.alt = alt;
+      lightboxTransitionImage.hidden = true;
+      lightboxTransitionTargetIndex = lightboxIndex;
+
+      const failTransition = () => {
+        if (imageRequestId !== lightboxImageRequestId) return;
+        lightboxIndex = renderedLightboxIndex;
+        updateLightboxCounter();
+        clearLightboxImageTransition(false);
+      };
+
+      const startTransition = () => {
+        if (
+          imageRequestId !== lightboxImageRequestId ||
+          !lightboxTransitionImage.complete ||
+          lightboxTransitionImage.naturalWidth === 0
+        ) return;
+
+        lightboxTransitionImage.onload = null;
+        lightboxTransitionImage.onerror = null;
+        lightboxTransitionImage.hidden = false;
+
+        void lightboxImage.offsetWidth;
+        lightboxImage.classList.add(direction < 0 ? 'is-sliding-out-prev' : 'is-sliding-out-next');
+        lightboxTransitionImage.classList.add(direction < 0 ? 'is-sliding-in-prev' : 'is-sliding-in-next');
+        lightboxTransitionTimer = window.setTimeout(finishLightboxImageTransition, 600);
+      };
+
+      const decodeAndStartTransition = () => {
+        if (imageRequestId !== lightboxImageRequestId) return;
+        if (typeof lightboxTransitionImage.decode === 'function') {
+          lightboxTransitionImage.decode().then(startTransition).catch(() => {
+            if (lightboxTransitionImage.naturalWidth > 0) startTransition();
+            else failTransition();
+          });
+        } else {
+          startTransition();
+        }
+      };
+
+      lightboxTransitionImage.onerror = failTransition;
+      if (lightboxTransitionImage.complete && lightboxTransitionImage.naturalWidth > 0) {
+        decodeAndStartTransition();
+      } else {
+        lightboxTransitionImage.onload = decodeAndStartTransition;
+      }
     };
 
     const moveLightbox = (direction) => {
       lightboxIndex = (lightboxIndex + direction + originalSlides.length) % originalSlides.length;
-      renderLightbox(true);
+      renderLightbox(true, direction);
     };
 
-    const openLightbox = (index) => {
+    const setLightboxTransitionOrigin = (sourceRect) => {
+      if (!lightbox || !sourceRect) return false;
+      const targetRect = lightbox.getBoundingClientRect();
+      if (!targetRect.width || !targetRect.height || !sourceRect.width || !sourceRect.height) return false;
+
+      const scaleX = Math.max(.06, Math.min(sourceRect.width / targetRect.width, 1.4));
+      const scaleY = Math.max(.06, Math.min(sourceRect.height / targetRect.height, 1.4));
+      lightbox.style.setProperty('--lightbox-origin-x', `${sourceRect.left - targetRect.left}px`);
+      lightbox.style.setProperty('--lightbox-origin-y', `${sourceRect.top - targetRect.top}px`);
+      lightbox.style.setProperty('--lightbox-origin-scale-x', String(scaleX));
+      lightbox.style.setProperty('--lightbox-origin-scale-y', String(scaleY));
+      return true;
+    };
+
+    const syncGalleryToLightbox = () => {
+      currentIndex = lightboxIndex + 1;
+      updateSlideState();
+      positionGallery(false);
+    };
+
+    const finishLightboxClose = () => {
+      if (lightbox?.open) lightbox.close();
+    };
+
+    const closeLightbox = () => {
+      if (!lightbox?.open || lightbox.classList.contains('is-closing')) return;
+
+      window.clearTimeout(lightboxDialogTransitionTimer);
+      finishLightboxImageTransition();
+      syncGalleryToLightbox();
+
+      const targetOpener = originalSlides[lightboxIndex]?.querySelector('[data-gallery-open]');
+      const hasOrigin = setLightboxTransitionOrigin(targetOpener?.getBoundingClientRect());
+
+      if (lightboxReducedMotion.matches || !hasOrigin) {
+        finishLightboxClose();
+        return;
+      }
+
+      lightbox.classList.remove('is-opening');
+      void lightbox.offsetWidth;
+      lightbox.classList.add('is-closing');
+      lightboxDialogTransitionTimer = window.setTimeout(finishLightboxClose, 560);
+    };
+
+    const openLightbox = (index, opener) => {
       if (!lightbox || !lightboxImage || suppressClick) return;
+      const sourceRect = opener?.getBoundingClientRect();
+      lightboxOpener = opener || null;
       lightboxIndex = index;
       renderLightbox(false);
+      lightbox.classList.remove('is-opening', 'is-closing');
+      lightbox.classList.add('is-measuring');
       lightbox.showModal();
+      const hasOrigin = setLightboxTransitionOrigin(sourceRect);
+      lightbox.classList.remove('is-measuring');
+
+      if (!lightboxReducedMotion.matches && hasOrigin) {
+        void lightbox.offsetWidth;
+        lightbox.classList.add('is-opening');
+        lightboxDialogTransitionTimer = window.setTimeout(() => {
+          lightbox.classList.remove('is-opening');
+          lightboxDialogTransitionTimer = 0;
+        }, 640);
+      }
+
+      lightboxClose?.focus({ preventScroll: true });
     };
 
     originalSlides.forEach((slide, index) => {
       const button = slide.querySelector('[data-gallery-open]');
-      if (button) button.addEventListener('click', () => openLightbox(index));
+      if (button) button.addEventListener('click', () => openLightbox(index, button));
     });
 
     previousButton.addEventListener('click', () => moveGallery(-1));
@@ -292,11 +467,11 @@ if (gallery) {
     if (lightbox) {
       lightboxPrevious?.addEventListener('click', () => moveLightbox(-1));
       lightboxNext?.addEventListener('click', () => moveLightbox(1));
-      lightboxClose?.addEventListener('click', () => lightbox.close());
+      lightboxClose?.addEventListener('click', closeLightbox);
       lightbox.addEventListener('keydown', (event) => {
         if (event.key === 'Escape') {
           event.preventDefault();
-          lightbox.close();
+          closeLightbox();
           return;
         }
         if (event.key === 'ArrowLeft') {
@@ -331,19 +506,32 @@ if (gallery) {
         lightboxPointerId = null;
       });
       lightbox.addEventListener('click', (event) => {
-        if (event.target === lightbox) lightbox.close();
+        if (event.target === lightbox) closeLightbox();
+      });
+      lightbox.addEventListener('cancel', (event) => {
+        event.preventDefault();
+        closeLightbox();
       });
       lightbox.addEventListener('close', () => {
+        window.clearTimeout(lightboxDialogTransitionTimer);
         window.clearTimeout(lightboxTransitionTimer);
         window.clearTimeout(transitionTimer);
-        lightbox.classList.remove('is-changing');
+        lightboxImageRequestId += 1;
+        clearLightboxImageTransition(false);
+        lightbox.classList.remove('is-measuring', 'is-opening', 'is-closing');
+        lightbox.style.removeProperty('--lightbox-origin-x');
+        lightbox.style.removeProperty('--lightbox-origin-y');
+        lightbox.style.removeProperty('--lightbox-origin-scale-x');
+        lightbox.style.removeProperty('--lightbox-origin-scale-y');
         lightboxImage?.removeAttribute('src');
         lightboxPointerId = null;
         isAnimating = false;
-        currentIndex = lightboxIndex + 1;
-        updateSlideState();
-        positionGallery(false);
-        originalSlides[lightboxIndex]?.querySelector('[data-gallery-open]')?.focus({ preventScroll: true });
+        renderedLightboxIndex = lightboxIndex;
+        syncGalleryToLightbox();
+
+        const focusTarget = originalSlides[lightboxIndex]?.querySelector('[data-gallery-open]') || lightboxOpener;
+        lightboxOpener = null;
+        focusTarget?.focus({ preventScroll: true });
       });
     }
 
