@@ -491,6 +491,7 @@ svg { fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: 
 .room-lightbox-stage {
   position: relative;
   min-height: 0;
+  background: var(--paper);
 }
 
 .room-lightbox figure {
@@ -511,8 +512,26 @@ svg { fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: 
   max-width: 100%;
   max-height: 100%;
   object-fit: contain;
-  background: color-mix(in srgb, var(--oat) 44%, var(--paper));
+  background: var(--paper);
   border-radius: 0;
+}
+
+.room-lightbox figure img.is-turning-next {
+  animation: room-lightbox-turn-next .38s cubic-bezier(.22, .61, .36, 1) both;
+}
+
+.room-lightbox figure img.is-turning-prev {
+  animation: room-lightbox-turn-prev .38s cubic-bezier(.22, .61, .36, 1) both;
+}
+
+@keyframes room-lightbox-turn-next {
+  from { opacity: .25; transform: translateX(26px) scale(.985); }
+  to { opacity: 1; transform: translateX(0) scale(1); }
+}
+
+@keyframes room-lightbox-turn-prev {
+  from { opacity: .25; transform: translateX(-26px) scale(.985); }
+  to { opacity: 1; transform: translateX(0) scale(1); }
 }
 
 .room-lightbox figcaption {
@@ -533,21 +552,35 @@ svg { fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: 
 }
 
 .room-lightbox-close { top: 18px; right: 18px; color: var(--ink); background: var(--paper); }
-.room-lightbox-prev { top: 50%; left: 14px; color: var(--ink); background: var(--surface); transform: translateY(-50%); }
-.room-lightbox-next { top: 50%; right: 14px; color: var(--ink); background: var(--surface); transform: translateY(-50%); }
+.room-lightbox .room-lightbox-arrow {
+  width: 60px;
+  height: 60px;
+  color: #111;
+  background: #fff;
+  border: 0;
+}
+.room-lightbox-prev { top: 50%; left: 18px; transform: translateY(-50%); }
+.room-lightbox-next { top: 50%; right: 18px; transform: translateY(-50%); }
 .room-lightbox button:hover,
 .room-lightbox button:focus-visible { color: var(--paper); background: var(--accent-deep); border-color: var(--accent-deep); }
 .room-lightbox-close svg { width: 19px; }
-.room-lightbox-arrow svg { width: 21px; }
+.room-lightbox-arrow svg { width: 20px; stroke-width: 1.9; }
+.room-lightbox .room-lightbox-arrow:hover,
+.room-lightbox .room-lightbox-arrow:focus-visible {
+  color: #111;
+  background: #fff;
+  border: 0;
+  outline: 0;
+  box-shadow: none;
+}
 .room-lightbox button:disabled { opacity: .25; cursor: default; }
-.room-lightbox-prev:hover { transform: translateY(-50%) translateX(-3px); }
-.room-lightbox-next:hover { transform: translateY(-50%) translateX(3px); }
 
 .room-lightbox-thumbs {
   display: flex;
+  justify-content: safe center;
   gap: 8px;
   min-width: 0;
-  margin-top: 12px;
+  margin: 12px auto 0;
   padding: 0 0 4px;
   overflow-x: auto;
   scrollbar-width: thin;
@@ -561,7 +594,7 @@ svg { fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: 
   padding: 0;
   overflow: hidden;
   border: 2px solid transparent;
-  border-radius: 0;
+  border-radius: 10px;
   opacity: .58;
 }
 
@@ -846,11 +879,10 @@ svg { fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: 
   .room-lightbox-layout { gap: 24px; }
   .room-lightbox-media { height: auto; }
   .room-lightbox-stage { height: min(52vh, 410px); }
-  .room-lightbox-close,
-  .room-lightbox-arrow { width: 44px; height: 44px; }
+  .room-lightbox-close { width: 44px; height: 44px; }
   .room-lightbox-close { top: 8px; right: auto; }
-  .room-lightbox-prev { left: 8px; }
-  .room-lightbox-next { right: 8px; }
+  .room-lightbox-prev { left: 10px; }
+  .room-lightbox-next { right: 10px; }
   .room-lightbox-thumbs button { flex-basis: 58px; width: 58px; height: 58px; }
   .room-lightbox-details { padding: 0 4px 28px; }
   .room-lightbox-category { margin-bottom: 18px; }

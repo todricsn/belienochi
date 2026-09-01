@@ -26,6 +26,7 @@
   };
 
   const SWIPE_DISTANCE = 48;
+  const LIGHTBOX_IMAGE_ANIMATION_CLASSES = ["is-turning-prev", "is-turning-next"];
   const galleries = [];
   const prefersReducedMotion = window.matchMedia
     ? window.matchMedia("(prefers-reduced-motion: reduce)")
@@ -297,11 +298,31 @@
     );
   }
 
-  function showLightboxImage(index) {
+  function animateLightboxImage(direction) {
+    if (!lightboxImage) return;
+
+    lightboxImage.classList.remove.apply(
+      lightboxImage.classList,
+      LIGHTBOX_IMAGE_ANIMATION_CLASSES
+    );
+
+    if (
+      !direction ||
+      (prefersReducedMotion && prefersReducedMotion.matches)
+    ) {
+      return;
+    }
+
+    void lightboxImage.offsetWidth;
+    lightboxImage.classList.add(direction < 0 ? "is-turning-prev" : "is-turning-next");
+  }
+
+  function showLightboxImage(index, direction) {
     if (!activeLightboxGallery || !activeLightboxGallery.photos.length || !lightboxImage) {
       return;
     }
 
+    const previousIndex = activeLightboxIndex;
     activeLightboxIndex = wrapIndex(index, activeLightboxGallery.photos.length);
     const photo = activeLightboxGallery.photos[activeLightboxIndex];
     const image = getPhotoImage(photo);
@@ -311,6 +332,9 @@
     const source = getPhotoSource(photo, image);
     if (source) lightboxImage.src = source;
     lightboxImage.alt = image.alt || "Фотография номера";
+    animateLightboxImage(
+      direction || (activeLightboxIndex === previousIndex ? 0 : activeLightboxIndex > previousIndex ? 1 : -1)
+    );
 
     if (lightboxCurrent) {
       lightboxCurrent.textContent = String(activeLightboxIndex + 1).padStart(2, "0");
@@ -334,7 +358,7 @@
     lightboxOpener = opener || null;
     populateLightboxDetails(roomCard || gallery.root.closest(".room-card"));
     renderLightboxThumbnails(gallery);
-    showLightboxImage(index);
+    showLightboxImage(index, 0);
     lightboxOpen = true;
     lightbox.hidden = false;
     lightbox.setAttribute("aria-hidden", "false");
@@ -415,13 +439,13 @@
 
     if (lightboxPrevious) {
       lightboxPrevious.addEventListener("click", function () {
-        showLightboxImage(activeLightboxIndex - 1);
+        showLightboxImage(activeLightboxIndex - 1, -1);
       });
     }
 
     if (lightboxNext) {
       lightboxNext.addEventListener("click", function () {
-        showLightboxImage(activeLightboxIndex + 1);
+        showLightboxImage(activeLightboxIndex + 1, 1);
       });
     }
 
@@ -430,7 +454,8 @@
         const thumbnail = event.target.closest("[data-room-lightbox-thumb]");
         if (!thumbnail || !lightboxThumbs.contains(thumbnail)) return;
 
-        showLightboxImage(Number(thumbnail.dataset.roomLightboxThumb));
+        const targetIndex = Number(thumbnail.dataset.roomLightboxThumb);
+        showLightboxImage(targetIndex, targetIndex < activeLightboxIndex ? -1 : 1);
       });
     }
 
@@ -448,10 +473,10 @@
     attachSwipe(
       lightbox,
       function () {
-        showLightboxImage(activeLightboxIndex - 1);
+        showLightboxImage(activeLightboxIndex - 1, -1);
       },
       function () {
-        showLightboxImage(activeLightboxIndex + 1);
+        showLightboxImage(activeLightboxIndex + 1, 1);
       }
     );
 
@@ -460,10 +485,10 @@
 
       if (event.key === "ArrowLeft") {
         event.preventDefault();
-        showLightboxImage(activeLightboxIndex - 1);
+        showLightboxImage(activeLightboxIndex - 1, -1);
       } else if (event.key === "ArrowRight") {
         event.preventDefault();
-        showLightboxImage(activeLightboxIndex + 1);
+        showLightboxImage(activeLightboxIndex + 1, 1);
       } else if (event.key === "Escape") {
         event.preventDefault();
         closeLightbox();
