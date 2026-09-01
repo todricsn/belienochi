@@ -10,6 +10,7 @@
     current: "[data-room-current]",
     lightbox: "[data-room-lightbox]",
     lightboxImage: "[data-room-lightbox-image]",
+    lightboxTransitionImage: "[data-room-lightbox-transition-image]",
     lightboxClose: "[data-room-lightbox-close]",
     lightboxPrevious: "[data-room-lightbox-prev]",
     lightboxNext: "[data-room-lightbox-next]",
@@ -26,7 +27,15 @@
   };
 
   const SWIPE_DISTANCE = 48;
-  const LIGHTBOX_IMAGE_ANIMATION_CLASSES = ["is-turning-prev", "is-turning-next"];
+  const LIGHTBOX_IMAGE_TRANSITION_DURATION = 520;
+  const LIGHTBOX_DIALOG_OPEN_DURATION = 560;
+  const LIGHTBOX_DIALOG_CLOSE_DURATION = 480;
+  const LIGHTBOX_IMAGE_ANIMATION_CLASSES = [
+    "is-sliding-out-prev",
+    "is-sliding-in-prev",
+    "is-sliding-out-next",
+    "is-sliding-in-next",
+  ];
   const galleries = [];
   const prefersReducedMotion = window.matchMedia
     ? window.matchMedia("(prefers-reduced-motion: reduce)")
@@ -34,6 +43,7 @@
 
   let lightbox = null;
   let lightboxImage = null;
+  let lightboxTransitionImage = null;
   let lightboxClose = null;
   let lightboxPrevious = null;
   let lightboxNext = null;
@@ -49,6 +59,9 @@
   let activeLightboxIndex = 0;
   let lightboxOpen = false;
   let lightboxOpener = null;
+  let lightboxSource = null;
+  let lightboxImageTransitionTimer = null;
+  let lightboxDialogTransitionTimer = null;
 
   function wrapIndex(index, length) {
     if (!length) return 0;
@@ -298,23 +311,39 @@
     );
   }
 
-  function animateLightboxImage(direction) {
-    if (!lightboxImage) return;
+  function hasReducedMotion() {
+    return Boolean(prefersReducedMotion && prefersReducedMotion.matches);
+  }
 
-    lightboxImage.classList.remove.apply(
-      lightboxImage.classList,
-      LIGHTBOX_IMAGE_ANIMATION_CLASSES
-    );
+  function clearLightboxImageTransition(useIncomingImage) {
+    window.clearTimeout(lightboxImageTransitionTimer);
+    lightboxImageTransitionTimer = null;
 
-    if (
-      !direction ||
-      (prefersReducedMotion && prefersReducedMotion.matches)
-    ) {
-      return;
+    if (lightboxImage) {
+      lightboxImage.classList.remove.apply(
+        lightboxImage.classList,
+        LIGHTBOX_IMAGE_ANIMATION_CLASSES
+      );
     }
 
-    void lightboxImage.offsetWidth;
-    lightboxImage.classList.add(direction < 0 ? "is-turning-prev" : "is-turning-next");
+    if (!lightboxTransitionImage) return;
+
+    if (useIncomingImage && lightboxTransitionImage.getAttribute("src") && lightboxImage) {
+      lightboxImage.src = lightboxTransitionImage.src;
+      lightboxImage.alt = lightboxTransitionImage.alt;
+    }
+
+    lightboxTransitionImage.classList.remove.apply(
+      lightboxTransitionImage.classList,
+      LIGHTBOX_IMAGE_ANIMATION_CLASSES
+    );
+    lightboxTransitionImage.hidden = true;
+    lightboxTransitionImage.removeAttribute("src");
+    lightboxTransitionImage.alt = "";
+  }
+
+  function finishLightboxImageTransition() {
+    clearLightboxImageTransition(true);
   }
 
   function showLightboxImage(index, direction) {
@@ -322,19 +351,53 @@
       return;
     }
 
+    clearLightboxImageTransition(true);
+
     const previousIndex = activeLightboxIndex;
-    activeLightboxIndex = wrapIndex(index, activeLightboxGallery.photos.length);
+    const nextIndex = wrapIndex(index, activeLightboxGallery.photos.length);
+    activeLightboxIndex = nextIndex;
     const photo = activeLightboxGallery.photos[activeLightboxIndex];
     const image = getPhotoImage(photo);
 
     if (!image) return;
 
     const source = getPhotoSource(photo, image);
-    if (source) lightboxImage.src = source;
-    lightboxImage.alt = image.alt || "Фотография номера";
-    animateLightboxImage(
-      direction || (activeLightboxIndex === previousIndex ? 0 : activeLightboxIndex > previousIndex ? 1 : -1)
+    const alt = image.alt || "Фотография номера";
+    const currentSource = lightboxImage.currentSrc || lightboxImage.src;
+    const resolvedDirection =
+      direction ||
+      (activeLightboxIndex === previousIndex ? 0 : activeLightboxIndex > previousIndex ? 1 : -1);
+    const shouldAnimate = Boolean(
+      resolvedDirection &&
+      lightboxOpen &&
+      lightboxTransitionImage &&
+      lightboxImage.getAttribute("src") &&
+      source &&
+      source !== currentSource &&
+      !hasReducedMotion()
     );
+
+    if (shouldAnimate) {
+      lightboxTransitionImage.src = source;
+      lightboxTransitionImage.alt = alt;
+      lightboxTransitionImage.hidden = false;
+
+      void lightboxImage.offsetWidth;
+      lightboxImage.classList.add(
+        resolvedDirection < 0 ? "is-sliding-out-prev" : "is-sliding-out-next"
+      );
+      lightboxTransitionImage.classList.add(
+        resolvedDirection < 0 ? "is-sliding-in-prev" : "is-sliding-in-next"
+      );
+
+      lightboxImageTransitionTimer = window.setTimeout(
+        finishLightboxImageTransition,
+        LIGHTBOX_IMAGE_TRANSITION_DURATION + 80
+      );
+    } else {
+      if (source) lightboxImage.src = source;
+      lightboxImage.alt = alt;
+    }
 
     if (lightboxCurrent) {
       lightboxCurrent.textContent = String(activeLightboxIndex + 1).padStart(2, "0");
@@ -351,18 +414,41 @@
     setControlState(lightboxNext, !hasMultiplePhotos);
   }
 
+  function setLightboxTransitionOrigin(sourceRect) {
+    if (!lightbox || !sourceRect) return false;
+
+    const targetRect = lightbox.getBoundingClientRect();
+    if (!targetRect.width || !targetRect.height || !sourceRect.width || !sourceRect.height) {
+      return false;
+    }
+
+    const scaleX = Math.max(.06, Math.min(sourceRect.width / targetRect.width, 1.4));
+    const scaleY = Math.max(.06, Math.min(sourceRect.height / targetRect.height, 1.4));
+
+    lightbox.style.setProperty("--lightbox-origin-x", `${sourceRect.left - targetRect.left}px`);
+    lightbox.style.setProperty("--lightbox-origin-y", `${sourceRect.top - targetRect.top}px`);
+    lightbox.style.setProperty("--lightbox-origin-scale-x", String(scaleX));
+    lightbox.style.setProperty("--lightbox-origin-scale-y", String(scaleY));
+    return true;
+  }
+
   function openLightbox(gallery, index, opener, roomCard) {
     if (!lightbox || !lightboxImage || !gallery || !gallery.photos.length) return;
 
     activeLightboxGallery = gallery;
     lightboxOpener = opener || null;
-    populateLightboxDetails(roomCard || gallery.root.closest(".room-card"));
+    lightboxSource = roomCard || gallery.root.closest(".room-card") || opener || null;
+    const sourceRect = lightboxSource ? lightboxSource.getBoundingClientRect() : null;
+
+    populateLightboxDetails(lightboxSource);
     renderLightboxThumbnails(gallery);
     showLightboxImage(index, 0);
     lightboxOpen = true;
     lightbox.hidden = false;
     lightbox.setAttribute("aria-hidden", "false");
     document.documentElement.classList.add("is-room-lightbox-open");
+    lightbox.classList.remove("is-opening", "is-closing");
+    lightbox.classList.add("is-measuring");
 
     if (typeof lightbox.showModal === "function") {
       if (!lightbox.open) {
@@ -376,16 +462,37 @@
       lightbox.setAttribute("open", "");
     }
 
+    setLightboxTransitionOrigin(sourceRect);
+    lightbox.classList.remove("is-measuring");
+
+    if (!hasReducedMotion() && sourceRect) {
+      void lightbox.offsetWidth;
+      lightbox.classList.add("is-opening");
+      lightboxDialogTransitionTimer = window.setTimeout(function () {
+        lightbox.classList.remove("is-opening");
+        lightboxDialogTransitionTimer = null;
+      }, LIGHTBOX_DIALOG_OPEN_DURATION + 80);
+    }
+
     if (lightboxClose) lightboxClose.focus({ preventScroll: true });
   }
 
   function finishLightboxClose() {
     if (!lightbox) return;
 
+    window.clearTimeout(lightboxDialogTransitionTimer);
+    lightboxDialogTransitionTimer = null;
+    clearLightboxImageTransition(false);
+
     lightboxOpen = false;
     lightbox.hidden = true;
     lightbox.setAttribute("aria-hidden", "true");
     lightbox.removeAttribute("open");
+    lightbox.classList.remove("is-measuring", "is-opening", "is-closing");
+    lightbox.style.removeProperty("--lightbox-origin-x");
+    lightbox.style.removeProperty("--lightbox-origin-y");
+    lightbox.style.removeProperty("--lightbox-origin-scale-x");
+    lightbox.style.removeProperty("--lightbox-origin-scale-y");
     document.documentElement.classList.remove("is-room-lightbox-open");
 
     if (lightboxImage) {
@@ -399,13 +506,13 @@
     const opener = lightboxOpener;
     activeLightboxGallery = null;
     lightboxOpener = null;
+    lightboxSource = null;
 
     if (opener && opener.isConnected) opener.focus({ preventScroll: true });
   }
 
-  function closeLightbox() {
-    if (!lightbox || !lightboxOpen) return;
-
+  function completeLightboxClose() {
+    if (!lightbox) return;
     if (typeof lightbox.close === "function" && lightbox.open) {
       lightbox.close();
     } else {
@@ -413,11 +520,39 @@
     }
   }
 
+  function closeLightbox() {
+    if (!lightbox || !lightboxOpen || lightbox.classList.contains("is-closing")) return;
+
+    window.clearTimeout(lightboxDialogTransitionTimer);
+    lightboxDialogTransitionTimer = null;
+    finishLightboxImageTransition();
+
+    const sourceRect =
+      lightboxSource && lightboxSource.isConnected
+        ? lightboxSource.getBoundingClientRect()
+        : null;
+    const hasOrigin = setLightboxTransitionOrigin(sourceRect);
+
+    if (hasReducedMotion() || !hasOrigin) {
+      completeLightboxClose();
+      return;
+    }
+
+    lightbox.classList.remove("is-opening");
+    void lightbox.offsetWidth;
+    lightbox.classList.add("is-closing");
+    lightboxDialogTransitionTimer = window.setTimeout(
+      completeLightboxClose,
+      LIGHTBOX_DIALOG_CLOSE_DURATION + 80
+    );
+  }
+
   function initLightbox() {
     lightbox = document.querySelector(SELECTORS.lightbox);
     if (!lightbox) return;
 
     lightboxImage = lightbox.querySelector(SELECTORS.lightboxImage);
+    lightboxTransitionImage = lightbox.querySelector(SELECTORS.lightboxTransitionImage);
     lightboxClose = lightbox.querySelector(SELECTORS.lightboxClose);
     lightboxPrevious = lightbox.querySelector(SELECTORS.lightboxPrevious);
     lightboxNext = lightbox.querySelector(SELECTORS.lightboxNext);

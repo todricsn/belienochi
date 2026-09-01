@@ -7,7 +7,7 @@
   <meta name="theme-color" content="#ffffff">
   <title>Номера — Белые Ночи</title>
   <link rel="icon" href="assets/images/logo-heritage.png">
-  <link rel="stylesheet" href="rooms.css?v=20260901-4">
+  <link rel="stylesheet" href="rooms.css?v=20260901-5">
 </head>
 <body>
   <header class="rooms-header">
@@ -265,7 +265,11 @@
       <div class="room-lightbox-media">
         <div class="room-lightbox-stage">
           <button class="room-lightbox-arrow room-lightbox-prev" type="button" data-room-lightbox-prev aria-label="Предыдущая фотография"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 5-7 7 7 7"/></svg></button>
-          <figure><img data-room-lightbox-image alt=""><figcaption><span data-room-lightbox-current>01</span> / <span data-room-lightbox-total>01</span></figcaption></figure>
+          <figure>
+            <img data-room-lightbox-image alt="">
+            <img class="room-lightbox-transition-image" data-room-lightbox-transition-image alt="" hidden>
+            <figcaption><span data-room-lightbox-current>01</span> / <span data-room-lightbox-total>01</span></figcaption>
+          </figure>
           <button class="room-lightbox-arrow room-lightbox-next" type="button" data-room-lightbox-next aria-label="Следующая фотография"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg></button>
         </div>
         <div class="room-lightbox-thumbs" data-room-lightbox-thumbs aria-label="Миниатюры фотографий"></div>
@@ -301,6 +305,6 @@
       <p>Цены на сайте не являются публичной офертой</p>
     </div>
   </footer>
-  <script src="rooms.js?v=20260901-1"></script>
+  <script src="rooms.js?v=20260901-2"></script>
 </body>
 </html>
