@@ -62,6 +62,9 @@
   let lightboxSource = null;
   let lightboxImageTransitionTimer = null;
   let lightboxDialogTransitionTimer = null;
+  let lightboxImageRequestId = 0;
+  let renderedLightboxIndex = 0;
+  let lightboxTransitionTargetIndex = null;
 
   function wrapIndex(index, length) {
     if (!length) return 0;
@@ -328,9 +331,22 @@
 
     if (!lightboxTransitionImage) return;
 
-    if (useIncomingImage && lightboxTransitionImage.getAttribute("src") && lightboxImage) {
+    lightboxTransitionImage.onload = null;
+    lightboxTransitionImage.onerror = null;
+
+    if (
+      useIncomingImage &&
+      !lightboxTransitionImage.hidden &&
+      lightboxTransitionImage.complete &&
+      lightboxTransitionImage.naturalWidth > 0 &&
+      lightboxTransitionImage.getAttribute("src") &&
+      lightboxImage
+    ) {
       lightboxImage.src = lightboxTransitionImage.src;
       lightboxImage.alt = lightboxTransitionImage.alt;
+      if (Number.isInteger(lightboxTransitionTargetIndex)) {
+        renderedLightboxIndex = lightboxTransitionTargetIndex;
+      }
     }
 
     lightboxTransitionImage.classList.remove.apply(
@@ -340,10 +356,29 @@
     lightboxTransitionImage.hidden = true;
     lightboxTransitionImage.removeAttribute("src");
     lightboxTransitionImage.alt = "";
+    lightboxTransitionTargetIndex = null;
   }
 
   function finishLightboxImageTransition() {
     clearLightboxImageTransition(true);
+  }
+
+  function updateLightboxImageState() {
+    if (lightboxCurrent) {
+      lightboxCurrent.textContent = String(activeLightboxIndex + 1).padStart(2, "0");
+    }
+
+    if (lightboxTotal && activeLightboxGallery) {
+      lightboxTotal.textContent = String(activeLightboxGallery.photos.length).padStart(2, "0");
+    }
+
+    updateLightboxThumbnailState();
+
+    const hasMultiplePhotos = Boolean(
+      activeLightboxGallery && activeLightboxGallery.photos.length > 1
+    );
+    setControlState(lightboxPrevious, !hasMultiplePhotos);
+    setControlState(lightboxNext, !hasMultiplePhotos);
   }
 
   function showLightboxImage(index, direction) {
@@ -351,6 +386,7 @@
       return;
     }
 
+    const imageRequestId = ++lightboxImageRequestId;
     clearLightboxImageTransition(true);
 
     const previousIndex = activeLightboxIndex;
@@ -377,41 +413,77 @@
       !hasReducedMotion()
     );
 
+    updateLightboxImageState();
+
     if (shouldAnimate) {
       lightboxTransitionImage.src = source;
       lightboxTransitionImage.alt = alt;
-      lightboxTransitionImage.hidden = false;
+      lightboxTransitionImage.hidden = true;
+      lightboxTransitionTargetIndex = activeLightboxIndex;
 
-      void lightboxImage.offsetWidth;
-      lightboxImage.classList.add(
-        resolvedDirection < 0 ? "is-sliding-out-prev" : "is-sliding-out-next"
-      );
-      lightboxTransitionImage.classList.add(
-        resolvedDirection < 0 ? "is-sliding-in-prev" : "is-sliding-in-next"
-      );
+      const failTransition = function () {
+        if (imageRequestId !== lightboxImageRequestId) return;
 
-      lightboxImageTransitionTimer = window.setTimeout(
-        finishLightboxImageTransition,
-        LIGHTBOX_IMAGE_TRANSITION_DURATION + 80
-      );
+        activeLightboxIndex = renderedLightboxIndex;
+        updateLightboxImageState();
+        clearLightboxImageTransition(false);
+      };
+
+      const startTransition = function () {
+        if (
+          imageRequestId !== lightboxImageRequestId ||
+          !lightboxTransitionImage.complete ||
+          lightboxTransitionImage.naturalWidth === 0
+        ) {
+          return;
+        }
+
+        lightboxTransitionImage.onload = null;
+        lightboxTransitionImage.onerror = null;
+        lightboxTransitionImage.hidden = false;
+
+        void lightboxImage.offsetWidth;
+        lightboxImage.classList.add(
+          resolvedDirection < 0 ? "is-sliding-out-prev" : "is-sliding-out-next"
+        );
+        lightboxTransitionImage.classList.add(
+          resolvedDirection < 0 ? "is-sliding-in-prev" : "is-sliding-in-next"
+        );
+
+        lightboxImageTransitionTimer = window.setTimeout(
+          finishLightboxImageTransition,
+          LIGHTBOX_IMAGE_TRANSITION_DURATION + 80
+        );
+      };
+
+      const decodeAndStartTransition = function () {
+        if (imageRequestId !== lightboxImageRequestId) return;
+
+        if (typeof lightboxTransitionImage.decode === "function") {
+          lightboxTransitionImage.decode().then(startTransition).catch(function () {
+            if (lightboxTransitionImage.naturalWidth > 0) {
+              startTransition();
+            } else {
+              failTransition();
+            }
+          });
+        } else {
+          startTransition();
+        }
+      };
+
+      lightboxTransitionImage.onerror = failTransition;
+
+      if (lightboxTransitionImage.complete && lightboxTransitionImage.naturalWidth > 0) {
+        decodeAndStartTransition();
+      } else {
+        lightboxTransitionImage.onload = decodeAndStartTransition;
+      }
     } else {
       if (source) lightboxImage.src = source;
       lightboxImage.alt = alt;
+      renderedLightboxIndex = activeLightboxIndex;
     }
-
-    if (lightboxCurrent) {
-      lightboxCurrent.textContent = String(activeLightboxIndex + 1).padStart(2, "0");
-    }
-
-    if (lightboxTotal) {
-      lightboxTotal.textContent = String(activeLightboxGallery.photos.length).padStart(2, "0");
-    }
-
-    updateLightboxThumbnailState();
-
-    const hasMultiplePhotos = activeLightboxGallery.photos.length > 1;
-    setControlState(lightboxPrevious, !hasMultiplePhotos);
-    setControlState(lightboxNext, !hasMultiplePhotos);
   }
 
   function setLightboxTransitionOrigin(sourceRect) {
@@ -482,6 +554,7 @@
 
     window.clearTimeout(lightboxDialogTransitionTimer);
     lightboxDialogTransitionTimer = null;
+    lightboxImageRequestId += 1;
     clearLightboxImageTransition(false);
 
     lightboxOpen = false;
@@ -505,6 +578,7 @@
 
     const opener = lightboxOpener;
     activeLightboxGallery = null;
+    renderedLightboxIndex = 0;
     lightboxOpener = null;
     lightboxSource = null;
 

@@ -575,6 +575,10 @@ svg { fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: 
   border-radius: 0;
 }
 
+.room-lightbox figure img[hidden] {
+  display: none;
+}
+
 .room-lightbox figure img.is-sliding-out-next,
 .room-lightbox figure img.is-sliding-in-next,
 .room-lightbox figure img.is-sliding-out-prev,
