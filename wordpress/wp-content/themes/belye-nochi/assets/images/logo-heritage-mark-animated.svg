@@ -1,0 +1,195 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" role="img" aria-labelledby="mark-title mark-desc">
+  <title id="mark-title">Знак гостиницы «Белые Ночи»</title>
+  <desc id="mark-desc">Лама в круге с мягкой перламутровой фактурой и зацикленной трансформацией</desc>
+
+  <defs>
+    <circle id="ring-shape" cx="246" cy="252" r="201.5" fill="none" stroke="#fff" stroke-width="13"/>
+    <path id="camel-shape" fill="#fff" d="M79.08 198 91 183.67 117 169.62 127 166.69 141 168.31 148 162.63 152 161.96 154.16 163 154.87 168 148.7 179 164.71 208 176 223.26 186 228.26 192 228.43 201 224.51 246 180.91 259 176.67 271 178.81 279 185.38 296 208.06 328 226.86 341.46 241 345.68 250 355.21 263 359.65 300 366.41 312 367.52 320 360.26 318 355.46 312 353.88 275 351.64 263 348 257 345.33 280 330.58 312 325.32 354 318.19 380 309.83 400 308.69 408 290 408.55 298.29 401 303.3 393 308.21 375 309.6 361 307.38 334 300.83 317 293.58 290 288 286.6 273 292.28 258 293.8 228 287.87 225.53 291 219.3 350 208.69 408 189 408.6 197.23 400 200.38 394 204.3 370 204.21 330 201.28 311 197.28 299 189 287.14 164.69 263 141.3 219 131.73 207 123 202.63 109 199.96 87 205.83 82 202.94Z"/>
+    <g id="heritage-shape">
+      <use href="#ring-shape"/>
+      <use href="#camel-shape"/>
+    </g>
+    <mask id="ring-mask" x="0" y="0" width="500" height="500" maskUnits="userSpaceOnUse" style="mask-type:alpha">
+      <use href="#ring-shape"/>
+    </mask>
+    <mask id="camel-mask" x="0" y="0" width="500" height="500" maskUnits="userSpaceOnUse" style="mask-type:alpha">
+      <use href="#camel-shape"/>
+    </mask>
+
+    <linearGradient id="pearl-base" x1="56" y1="52" x2="446" y2="455" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#fffaf0"/>
+      <stop offset=".27" stop-color="#eadcc7"/>
+      <stop offset=".54" stop-color="#fffdf6"/>
+      <stop offset=".77" stop-color="#d4bea0"/>
+      <stop offset="1" stop-color="#f5ead8"/>
+    </linearGradient>
+
+    <radialGradient id="pearl-light" cx="0" cy="0" r="1" gradientTransform="translate(182 154) rotate(35) scale(235 180)" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#fff" stop-opacity=".9"/>
+      <stop offset=".38" stop-color="#fff5e5" stop-opacity=".35"/>
+      <stop offset="1" stop-color="#fff" stop-opacity="0"/>
+    </radialGradient>
+
+    <linearGradient id="moving-sheen" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#fff" stop-opacity="0"/>
+      <stop offset=".35" stop-color="#fff" stop-opacity=".08"/>
+      <stop offset=".5" stop-color="#fff" stop-opacity=".92"/>
+      <stop offset=".65" stop-color="#fff" stop-opacity=".12"/>
+      <stop offset="1" stop-color="#fff" stop-opacity="0"/>
+    </linearGradient>
+
+    <linearGradient id="ring-glint" x1="96" y1="95" x2="405" y2="413" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#fff" stop-opacity="0"/>
+      <stop offset=".48" stop-color="#fffdf7" stop-opacity=".9"/>
+      <stop offset="1" stop-color="#d7bea0" stop-opacity="0"/>
+    </linearGradient>
+
+    <pattern id="sand-strata" width="26" height="26" patternUnits="userSpaceOnUse" patternTransform="rotate(19)">
+      <path d="M0 5H26 M0 18H26" stroke="#806b50" stroke-width=".85" stroke-opacity=".28"/>
+      <path d="M0 7H26 M0 20H26" stroke="#fff" stroke-width=".55" stroke-opacity=".34"/>
+      <circle cx="5" cy="13" r=".9" fill="#8d7658" fill-opacity=".32"/>
+      <circle cx="18" cy="1" r=".7" fill="#fff" fill-opacity=".45"/>
+    </pattern>
+
+    <filter id="fine-grain" x="-8%" y="-8%" width="116%" height="116%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency=".72" numOctaves="2" seed="12"/>
+      <feColorMatrix type="saturate" values="0"/>
+      <feComponentTransfer>
+        <feFuncR type="linear" slope=".42" intercept=".38"/>
+        <feFuncG type="linear" slope=".42" intercept=".38"/>
+        <feFuncB type="linear" slope=".42" intercept=".38"/>
+        <feFuncA type="table" tableValues="0 .28"/>
+      </feComponentTransfer>
+    </filter>
+
+    <filter id="soft-glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="2.4" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <style>
+    .pearl-light { opacity: .48; animation: pearl-drift 4.2s ease-in-out 1; }
+    .sand-texture { animation: sand-drift 4.2s ease-in-out 1; }
+    .camel-cycle {
+      transform-box: view-box;
+      transform-origin: 246px 286px;
+      animation: camel-cycle 4.2s cubic-bezier(.42, 0, .2, 1) 1;
+    }
+    .mark-sheen { opacity: 0; animation: mark-sheen 4.2s cubic-bezier(.4, 0, .2, 1) 1; }
+    .ring-glint { transform-origin: 246px 252px; animation: ring-orbit 4.2s ease-in-out 1; }
+    .morph-piece {
+      opacity: 0;
+      transform-box: fill-box;
+      transform-origin: center;
+    }
+    .morph-a { animation: morph-a 4.2s cubic-bezier(.42, 0, .2, 1) 1; }
+    .morph-b { animation: morph-b 4.2s cubic-bezier(.42, 0, .2, 1) 1; }
+    .morph-c { animation: morph-c 4.2s cubic-bezier(.42, 0, .2, 1) 1; }
+
+    #static-mode:target ~ * .pearl-light,
+    #static-mode:target ~ * .sand-texture,
+    #static-mode:target ~ .camel-cycle,
+    #static-mode:target ~ * .mark-sheen,
+    #static-mode:target ~ .ring-glint,
+    #static-mode:target ~ * .morph-piece { animation: none; }
+    #static-mode:target ~ .camel-cycle { opacity: 1; transform: none; }
+    #static-mode:target ~ * .mark-sheen,
+    #static-mode:target ~ * .morph-piece { opacity: 0; }
+
+    @keyframes pearl-drift {
+      0%, 100% { transform: translate(0, 0) scale(1); opacity: .48; }
+      50% { transform: translate(18px, 12px) scale(1.04); opacity: .6; }
+    }
+    @keyframes sand-drift {
+      0%, 100% { transform: translate(0, 0); }
+      50% { transform: translate(26px, -13px); }
+    }
+    @keyframes camel-cycle {
+      0%, 8%, 86%, 100% { opacity: 1; transform: translate(0, 0) scale(1); }
+      13% { opacity: 1; transform: translate(0, 5px) scale(1.06, .94); }
+      19% { opacity: .82; transform: translate(0, 10px) scale(.22, 1.1); }
+      23%, 64% { opacity: 0; transform: translate(0, 12px) scale(.06, .82); }
+      68% { opacity: .92; transform: translate(0, 9px) scale(.18, 1.12); }
+      73% { opacity: 1; transform: translate(0, -5px) scale(1.1, .9); }
+      79% { opacity: 1; transform: translate(0, 2px) scale(.96, 1.04); }
+    }
+    @keyframes mark-sheen {
+      0%, 78% { transform: translateX(-30px); opacity: 0; }
+      83% { opacity: .72; }
+      96% { transform: translateX(760px); opacity: 0; }
+      100% { transform: translateX(760px); opacity: 0; }
+    }
+    @keyframes morph-a {
+      0%, 16%, 71%, 100% { opacity: 0; transform: translate(-55px, 74px) rotate(-90deg) scale(.16); }
+      22% { opacity: .96; transform: translate(-34px, 31px) rotate(-88deg) scale(.58); }
+      33% { opacity: 1; transform: translate(42px, -27px) rotate(-23deg) scale(.88); }
+      45% { opacity: 1; transform: translate(-24px, -9px) rotate(18deg) scale(1); }
+      57% { opacity: .95; transform: translate(18px, 39px) rotate(76deg) scale(.72); }
+      66% { opacity: .55; transform: translate(4px, 52px) rotate(90deg) scale(.24); }
+    }
+    @keyframes morph-b {
+      0%, 16%, 71%, 100% { opacity: 0; transform: translate(53px, -64px) rotate(90deg) scale(.14); }
+      22% { opacity: .94; transform: translate(35px, -39px) rotate(84deg) scale(.56); }
+      34% { opacity: 1; transform: translate(-38px, 18px) rotate(31deg) scale(.9); }
+      46% { opacity: 1; transform: translate(29px, -3px) rotate(-22deg) scale(1.04); }
+      58% { opacity: .92; transform: translate(-8px, 27px) rotate(2deg) scale(.7); }
+      66% { opacity: .52; transform: translate(0, 29px) rotate(0) scale(.2); }
+    }
+    @keyframes morph-c {
+      0%, 16%, 71%, 100% { opacity: 0; transform: translate(0, -76px) rotate(0) scale(.12); }
+      22% { opacity: .88; transform: translate(0, -58px) rotate(0) scale(.38); }
+      34% { opacity: 1; transform: translate(-43px, -7px) rotate(-66deg) scale(.76); }
+      46% { opacity: 1; transform: translate(31px, 17px) rotate(62deg) scale(.88); }
+      58% { opacity: .9; transform: translate(0, -7px) rotate(0) scale(.62); }
+      66% { opacity: .48; transform: translate(0, -20px) rotate(0) scale(.18); }
+    }
+    @keyframes ring-orbit { to { transform: rotate(360deg); } }
+
+    @media (prefers-reduced-motion: reduce) {
+      .pearl-light, .sand-texture, .camel-cycle, .mark-sheen, .ring-glint, .morph-piece { animation: none; }
+      .mark-sheen { opacity: 0; }
+      .camel-cycle { opacity: 1; transform: none; }
+      .morph-piece { opacity: 0; }
+    }
+  </style>
+
+  <g id="static-mode"/>
+
+  <g mask="url(#ring-mask)" filter="url(#soft-glow)">
+    <rect width="500" height="500" fill="url(#pearl-base)"/>
+    <ellipse class="pearl-light" cx="185" cy="152" rx="238" ry="185" fill="url(#pearl-light)"/>
+    <rect class="sand-texture" x="-32" y="-20" width="564" height="548" fill="url(#sand-strata)" opacity=".62"/>
+    <rect x="0" y="0" width="500" height="500" filter="url(#fine-grain)" opacity=".3"/>
+  </g>
+
+  <g class="camel-cycle" mask="url(#camel-mask)" filter="url(#soft-glow)">
+    <rect width="500" height="500" fill="url(#pearl-base)"/>
+    <ellipse class="pearl-light" cx="185" cy="152" rx="238" ry="185" fill="url(#pearl-light)"/>
+    <rect class="sand-texture" x="-32" y="-20" width="564" height="548" fill="url(#sand-strata)" opacity=".62"/>
+    <rect x="0" y="0" width="500" height="500" filter="url(#fine-grain)" opacity=".3"/>
+    <g transform="rotate(11 250 250)">
+      <rect class="mark-sheen" x="-210" y="-90" width="150" height="680" fill="url(#moving-sheen)"/>
+    </g>
+  </g>
+
+  <g filter="url(#soft-glow)">
+    <g class="morph-piece morph-a">
+      <rect x="190" y="224" width="112" height="34" rx="17" fill="url(#pearl-base)"/>
+      <rect x="190" y="224" width="112" height="34" rx="17" fill="url(#sand-strata)" opacity=".5"/>
+    </g>
+    <g class="morph-piece morph-b">
+      <rect x="210" y="276" width="74" height="54" rx="23" fill="url(#pearl-base)"/>
+      <rect x="210" y="276" width="74" height="54" rx="23" fill="url(#sand-strata)" opacity=".5"/>
+    </g>
+    <g class="morph-piece morph-c">
+      <rect x="232" y="342" width="32" height="84" rx="16" fill="url(#pearl-base)"/>
+      <rect x="232" y="342" width="32" height="84" rx="16" fill="url(#sand-strata)" opacity=".5"/>
+    </g>
+  </g>
+
+  <circle class="ring-glint" cx="246" cy="252" r="201.5" fill="none" stroke="url(#ring-glint)" stroke-width="1.45" stroke-linecap="round" stroke-dasharray="92 1174" opacity=".65"/>
+</svg>
