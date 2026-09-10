@@ -2,6 +2,7 @@
 	'use strict';
 
 	const cookieName = 'bn_cookie_consent';
+	const metrikaId = 112460419;
 	const banner = document.querySelector( '[data-cookie-banner]' );
 	const settingsButton = document.querySelector( '[data-cookie-settings]' );
 	const analyticsCheckbox = document.querySelector( '[data-cookie-analytics]' );
@@ -10,6 +11,49 @@
 
 	if ( ! banner || ! settingsButton || ! analyticsCheckbox || ! acceptButton || ! essentialButton ) {
 		return;
+	}
+
+	let metrikaStarted = false;
+
+	function startMetrika() {
+		if ( metrikaStarted ) {
+			return;
+		}
+
+		( function ( m, e, t, r, i, k, a ) {
+			m[ i ] = m[ i ] || function () { ( m[ i ].a = m[ i ].a || [] ).push( arguments ); };
+			m[ i ].l = 1 * new Date();
+			for ( let j = 0; j < e.scripts.length; j++ ) {
+				if ( e.scripts[ j ].src === r ) {
+					return;
+				}
+			}
+			k = e.createElement( t );
+			a = e.getElementsByTagName( t )[ 0 ];
+			k.async = 1;
+			k.src = r;
+			k.dataset.bnMetrika = String( metrikaId );
+			a.parentNode.insertBefore( k, a );
+		} )( window, document, 'script', 'https://mc.yandex.ru/metrika/tag.js?id=' + metrikaId, 'ym' );
+
+		window.ym( metrikaId, 'init', {
+			ssr: true,
+			webvisor: true,
+			clickmap: true,
+			ecommerce: 'dataLayer',
+			referrer: document.referrer,
+			url: location.href,
+			accurateTrackBounce: true,
+			trackLinks: true,
+		} );
+		metrikaStarted = true;
+	}
+
+	function stopMetrika() {
+		if ( metrikaStarted && typeof window.ym === 'function' ) {
+			window.ym( metrikaId, 'destruct' );
+		}
+		metrikaStarted = false;
 	}
 
 	function readChoice() {
@@ -33,6 +77,11 @@
 
 	function applyChoice( choice ) {
 		const allowed = choice === 'analytics';
+		if ( allowed ) {
+			startMetrika();
+		} else {
+			stopMetrika();
+		}
 		document.querySelectorAll( '[data-cookie-src]' ).forEach( function ( frame ) {
 			if ( allowed && frame.src !== frame.dataset.cookieSrc ) {
 				frame.src = frame.dataset.cookieSrc;

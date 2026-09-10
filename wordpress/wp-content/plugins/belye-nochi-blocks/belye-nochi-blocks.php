@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Белые Ночи — блоки и номера
  * Description: Нативные блоки Gutenberg, паттерны страниц и управляемый каталог номеров.
- * Version: 1.1.5
+ * Version: 1.1.8
  * Requires at least: 6.5
  * Requires PHP: 8.1
  * Author: Белые Ночи
@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'BN_BLOCKS_VERSION', '1.1.5' );
+define( 'BN_BLOCKS_VERSION', '1.1.8' );
 define( 'BN_BLOCKS_FILE', __FILE__ );
 define( 'BN_BLOCKS_DIR', plugin_dir_path( __FILE__ ) );
 define( 'BN_BLOCKS_URL', plugin_dir_url( __FILE__ ) );
@@ -264,7 +264,7 @@ add_action( 'save_post_bn_room', 'bn_blocks_set_new_room_order', 10, 3 );
 
 function bn_blocks_cookie_notice() {
 	?>
-	<div class="bn-cookie" data-cookie-banner hidden role="dialog" aria-modal="true" aria-labelledby="bn-cookie-title">
+	<div class="bn-cookie" data-cookie-banner hidden role="dialog" aria-modal="false" aria-labelledby="bn-cookie-title">
 		<div class="bn-cookie__inner">
 			<div class="bn-cookie__copy">
 				<p class="bn-cookie__eyebrow">Настройки cookies</p>
