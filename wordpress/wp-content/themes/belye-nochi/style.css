@@ -3,7 +3,7 @@ Theme Name: Белые Ночи
 Theme URI: https://белыеночи-красноярск.рф/
 Author: Белые Ночи
 Description: Тема гостиницы «Белые Ночи» с контентом страниц в Gutenberg.
-Version: 1.0.0
+Version: 1.1.0
 Requires at least: 6.5
 Requires PHP: 8.1
 Text Domain: belye-nochi
@@ -13,6 +13,13 @@ html {
   scroll-behavior: smooth;
 }
 
-.site-main > .wp-block-html {
-  display: contents;
+.site-main > .wp-block-group {
+  margin-block: 0;
+}
+
+.site-main .wp-block-group,
+.site-main .wp-block-group > * {
+  box-sizing: border-box;
+  margin-block-start: 0;
+  margin-block-end: 0;
 }

@@ -1,0 +1,32 @@
+.bn-block-preview {
+	box-sizing: border-box;
+	min-height: 150px;
+	padding: 28px;
+	border: 1px solid #d7d2c8;
+	background: #f7f3ea;
+	color: #2d2a25;
+}
+
+.bn-block-preview__eyebrow {
+	display: block;
+	margin-bottom: 16px;
+	font-size: 11px;
+	font-weight: 700;
+	letter-spacing: .14em;
+	text-transform: uppercase;
+}
+
+.bn-block-preview strong {
+	display: block;
+	font-family: Georgia, serif;
+	font-size: 32px;
+	font-weight: 400;
+	line-height: 1.05;
+}
+
+.bn-block-preview p { margin: 14px 0 0; }
+.bn-gallery-control { padding: 16px; border: 1px solid #d7d2c8; background: #fff; }
+.bn-gallery-control__label { margin-top: 0; font-weight: 600; }
+.bn-gallery-control__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 12px; }
+.bn-gallery-control__image img { display: block; width: 100%; aspect-ratio: 1; object-fit: cover; margin-bottom: 4px; }
+.bn-room-settings .bn-gallery-control { padding: 0; border: 0; }
