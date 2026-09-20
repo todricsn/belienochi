@@ -17,7 +17,7 @@ function bn_blocks_theme_asset( $relative ) {
  * Complex visual blocks retain their tested markup, while Gutenberg stores a
  * real block with structured attributes instead of a Custom HTML fragment.
  */
-function bn_blocks_source_fragment( $source, $id = '', $class = '' ) {
+function bn_blocks_source_fragment( $source, $id = '', $class = '', $data_attribute = '' ) {
 	$path = get_theme_file_path( 'source/' . $source );
 	if ( ! is_readable( $path ) ) {
 		return '';
@@ -34,8 +34,13 @@ function bn_blocks_source_fragment( $source, $id = '', $class = '' ) {
 	$xpath = new DOMXPath( $document );
 	if ( $id ) {
 		$query = '//*[@id="' . $id . '"]';
-	} else {
+	} elseif ( $class ) {
 		$query = '//*[contains(concat(" ", normalize-space(@class), " "), " ' . $class . ' ")]';
+	} elseif ( preg_match( '/\Adata-[a-z][a-z0-9-]*\z/i', $data_attribute ) ) {
+		$query = '//*[@' . $data_attribute . ']';
+	} else {
+		libxml_clear_errors();
+		return '';
 	}
 	$node = $xpath->query( $query )->item( 0 );
 	if ( ! $node ) {
@@ -99,27 +104,42 @@ function bn_blocks_render_photo_gallery( $attributes ) {
 	$restaurant = 'restaurant' === $variant;
 	$root_class = $restaurant ? 'restaurant-gallery reveal' : 'photo-gallery reveal';
 	$data_root  = $restaurant ? 'data-restaurant-gallery' : 'data-photo-gallery';
-	$data_track = $restaurant ? 'data-restaurant-track' : 'data-gallery-track';
-	$data_slide = $restaurant ? 'data-restaurant-slide' : 'data-gallery-slide';
-	$data_open  = $restaurant ? 'data-restaurant-open' : 'data-gallery-open';
-	$data_prev  = $restaurant ? 'data-restaurant-prev' : 'data-gallery-prev';
-	$data_next  = $restaurant ? 'data-restaurant-next' : 'data-gallery-next';
 	$label      = $attributes['ariaLabel'] ?? ( $restaurant ? 'Фотографии ресторана Белые Ночи' : 'Фотографии гостиницы и номеров Белых Ночей' );
 
 	ob_start();
 	?>
 	<div class="<?php echo esc_attr( $root_class ); ?>" <?php echo esc_attr( $data_root ); ?> tabindex="0" role="region" aria-roledescription="карусель" aria-label="<?php echo esc_attr( $label ); ?>">
-		<div class="<?php echo $restaurant ? 'restaurant-gallery-track' : 'photo-gallery-track'; ?>" <?php echo esc_attr( $data_track ); ?>>
+		<?php if ( $restaurant ) : ?>
 			<?php foreach ( $images as $index => $image ) : ?>
-				<figure class="<?php echo $restaurant ? 'restaurant-gallery-slide' : 'photo-gallery-slide'; ?>" <?php echo esc_attr( $data_slide ); ?>>
-					<button class="<?php echo $restaurant ? 'restaurant-gallery-image' : 'photo-gallery-image'; ?>" type="button" <?php echo esc_attr( $data_open ); ?> aria-label="Открыть фотографию <?php echo esc_attr( $index + 1 ); ?>">
+				<?php
+				$width  = 0;
+				$height = 0;
+				if ( ! empty( $image['id'] ) ) {
+					$metadata = wp_get_attachment_metadata( absint( $image['id'] ) );
+					$width    = is_array( $metadata ) ? absint( $metadata['width'] ?? 0 ) : 0;
+					$height   = is_array( $metadata ) ? absint( $metadata['height'] ?? 0 ) : 0;
+				}
+				$orientation = ( $width && $height && $height > $width ) ? 'portrait' : 'landscape';
+				?>
+				<figure class="restaurant-gallery-item restaurant-gallery-item-<?php echo esc_attr( $orientation ); ?>">
+					<button type="button" data-restaurant-gallery-open aria-label="Открыть фотографию <?php echo esc_attr( $index + 1 ); ?>">
+						<img src="<?php echo esc_url( $image['url'] ?? '' ); ?>" alt="<?php echo esc_attr( $image['alt'] ?? '' ); ?>" loading="lazy" decoding="async">
+					</button>
+				</figure>
+			<?php endforeach; ?>
+		<?php else : ?>
+		<div class="photo-gallery-track" data-gallery-track>
+			<?php foreach ( $images as $index => $image ) : ?>
+				<figure class="photo-gallery-slide" data-gallery-slide>
+					<button class="photo-gallery-image" type="button" data-gallery-open aria-label="Открыть фотографию <?php echo esc_attr( $index + 1 ); ?>">
 						<img src="<?php echo esc_url( $image['url'] ?? '' ); ?>" alt="<?php echo esc_attr( $image['alt'] ?? '' ); ?>" loading="lazy" decoding="async">
 					</button>
 				</figure>
 			<?php endforeach; ?>
 		</div>
-		<button class="<?php echo $restaurant ? 'restaurant-gallery-edge restaurant-gallery-edge-prev' : 'photo-gallery-edge photo-gallery-edge-prev'; ?>" type="button" <?php echo esc_attr( $data_prev ); ?> aria-label="Предыдущая фотография"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 5-7 7 7 7"/></svg></button>
-		<button class="<?php echo $restaurant ? 'restaurant-gallery-edge restaurant-gallery-edge-next' : 'photo-gallery-edge photo-gallery-edge-next'; ?>" type="button" <?php echo esc_attr( $data_next ); ?> aria-label="Следующая фотография"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg></button>
+		<button class="photo-gallery-edge photo-gallery-edge-prev" type="button" data-gallery-prev aria-label="Предыдущая фотография"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 5-7 7 7 7"/></svg></button>
+		<button class="photo-gallery-edge photo-gallery-edge-next" type="button" data-gallery-next aria-label="Следующая фотография"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg></button>
+		<?php endif; ?>
 	</div>
 	<?php
 	return ob_get_clean();
@@ -252,7 +272,7 @@ function bn_blocks_page_has_block( $name ) {
 function bn_blocks_render_dialogs() {
 	if ( bn_blocks_page_has_block( 'belye-nochi/photo-gallery' ) ) {
 		echo bn_blocks_source_fragment( 'index.html', '', 'photo-lightbox' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-		echo bn_blocks_source_fragment( 'index.html', '', 'restaurant-lightbox' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		echo bn_blocks_source_fragment( 'index.html', '', '', 'data-restaurant-lightbox' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 	if ( bn_blocks_page_has_block( 'belye-nochi/room-catalog' ) ) {
 		echo bn_blocks_source_fragment( 'rooms.html', '', 'room-lightbox' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
