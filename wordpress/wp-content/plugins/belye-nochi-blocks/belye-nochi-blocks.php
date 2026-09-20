@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Белые Ночи — блоки и номера
  * Description: Нативные блоки Gutenberg, паттерны страниц и управляемый каталог номеров.
- * Version: 1.1.10
+ * Version: 1.1.12
  * Requires at least: 6.5
  * Requires PHP: 8.1
  * Author: Белые Ночи
@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'BN_BLOCKS_VERSION', '1.1.10' );
+define( 'BN_BLOCKS_VERSION', '1.1.12' );
 define( 'BN_BLOCKS_FILE', __FILE__ );
 define( 'BN_BLOCKS_DIR', plugin_dir_path( __FILE__ ) );
 define( 'BN_BLOCKS_URL', plugin_dir_url( __FILE__ ) );
