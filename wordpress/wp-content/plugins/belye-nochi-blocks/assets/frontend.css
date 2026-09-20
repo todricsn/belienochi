@@ -116,3 +116,39 @@
 	.bn-cookie-settings { right: 10px; bottom: 10px; }
 	.privacy-policy .display-title { font-size: clamp(40px, 12vw, 58px); }
 }
+
+/* Restaurant videos stay inline at their real media ratio; only photos open in the lightbox. */
+.restaurant-gallery-item-video {
+	align-self: start;
+	aspect-ratio: auto;
+}
+
+.restaurant-gallery-item-video.restaurant-gallery-item-portrait { grid-row: span 10; }
+.restaurant-gallery-item-video.restaurant-gallery-item-landscape { grid-row: span 4; }
+
+.restaurant-gallery-item-video video {
+	display: block;
+	width: 100%;
+	max-width: 100%;
+	height: auto;
+	aspect-ratio: var(--restaurant-media-ratio, auto);
+	object-fit: contain;
+	background: #111;
+}
+
+@media (max-width: 760px) {
+	.restaurant-gallery-item-video,
+	.restaurant-gallery-item-video.restaurant-gallery-item-portrait,
+	.restaurant-gallery-item-video.restaurant-gallery-item-landscape {
+		grid-column: auto;
+		grid-row: auto;
+		align-self: start;
+		aspect-ratio: auto;
+	}
+
+	.restaurant-gallery-item-video video {
+		width: 100%;
+		height: auto;
+		aspect-ratio: var(--restaurant-media-ratio, auto);
+	}
+}

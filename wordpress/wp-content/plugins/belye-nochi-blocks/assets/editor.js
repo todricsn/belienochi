@@ -18,33 +18,69 @@
 		);
 	}
 
-	function GalleryControl( { value, onChange, label } ) {
-		const images = Array.isArray( value ) ? value : [];
+	function isVideoMedia( media ) {
+		const type = String( media && media.type || '' ).toLowerCase();
+		const mime = String( media && media.mime || '' ).toLowerCase();
+		return 'video' === type || type.indexOf( 'video/' ) === 0 || mime.indexOf( 'video/' ) === 0;
+	}
+
+	function mediaDimension( media, key ) {
+		const direct = Number( media && media[ key ] );
+		const details = media && media.media_details ? Number( media.media_details[ key ] ) : 0;
+		return direct > 0 ? direct : details > 0 ? details : 0;
+	}
+
+	function GalleryControl( { value, onChange, label, allowVideo } ) {
+		const canUseVideo = true === allowVideo;
+		const images = ( Array.isArray( value ) ? value : [] ).filter( function ( image ) { return canUseVideo || ! isVideoMedia( image ); } );
+		const mediaLabel = label || ( canUseVideo ? 'Фотографии и видео' : 'Фотографии' );
 		return el(
 			'div',
 			{ className: 'bn-gallery-control' },
-			el( 'p', { className: 'bn-gallery-control__label' }, label || 'Фотографии' ),
+			el( 'p', { className: 'bn-gallery-control__label' }, mediaLabel ),
 			images.length
 				? el( 'div', { className: 'bn-gallery-control__grid' }, images.map( function ( image, index ) {
-				return el( 'div', { className: 'bn-gallery-control__image', key: ( image.id || image.url ) + '-' + index },
-					el( 'img', { src: image.url, alt: image.alt || '' } ),
+				const video = isVideoMedia( image );
+				return el( 'div', { className: 'bn-gallery-control__image' + ( video ? ' is-video' : '' ), key: ( image.id || image.url ) + '-' + index },
+					video
+						? el( 'video', { src: image.url, width: image.width || undefined, height: image.height || undefined, controls: true, muted: true, playsInline: true, preload: 'metadata', 'aria-label': image.alt || 'Предпросмотр видео', style: { display: 'block', width: '100%', height: 'auto', marginBottom: '4px', background: '#111' } } )
+						: el( 'img', { src: image.url, alt: image.alt || '' } ),
 					el( Button, { isDestructive: true, isSmall: true, onClick: function () { onChange( images.filter( function ( item, itemIndex ) { return itemIndex !== index; } ) ); } }, 'Убрать' )
 				);
 			} ) )
-				: el( Notice, { status: 'info', isDismissible: false }, 'Фотографии пока не выбраны.' ),
+				: el( Notice, { status: 'info', isDismissible: false }, canUseVideo ? 'Фотографии и видео пока не выбраны.' : 'Фотографии пока не выбраны.' ),
 			el( MediaUploadCheck, null,
 				el( MediaUpload, {
 					onSelect: function ( media ) {
-						const selected = ( Array.isArray( media ) ? media : [ media ] ).map( function ( item ) {
-							return { id: item.id || 0, url: item.url, alt: item.alt || item.caption || '' };
+						const selectedMedia = Array.isArray( media ) ? media : [ media ];
+						const selected = selectedMedia.map( function ( item ) {
+							const existing = images.find( function ( image ) {
+								return item.id && image.id && String( item.id ) === String( image.id );
+							} ) || {};
+							const video = canUseVideo && ( isVideoMedia( item ) || isVideoMedia( existing ) );
+							return {
+								id: item.id || 0,
+								url: item.url,
+								alt: item.alt || item.caption || existing.alt || '',
+								type: video ? 'video' : 'image',
+								mime: video ? ( item.mime || existing.mime || '' ) : '',
+								width: Number( existing.width ) > 0 ? Number( existing.width ) : mediaDimension( item, 'width' ),
+								height: Number( existing.height ) > 0 ? Number( existing.height ) : mediaDimension( item, 'height' )
+							};
 						} );
-						onChange( selected );
+						const selectedUrls = selectedMedia.map( function ( item ) { return item.url; } ).filter( Boolean );
+						const legacy = canUseVideo
+							? images.filter( function ( image ) {
+								return ! image.id && ! isVideoMedia( image ) && selectedUrls.indexOf( image.url ) === -1;
+							} )
+							: [];
+						onChange( legacy.concat( selected ) );
 					},
-					allowedTypes: [ 'image' ],
+					allowedTypes: canUseVideo ? [ 'image', 'video' ] : [ 'image' ],
 					multiple: true,
-					gallery: true,
+					gallery: ! canUseVideo,
 					value: images.map( function ( image ) { return image.id; } ).filter( Boolean ),
-					render: function ( { open } ) { return el( Button, { variant: 'secondary', onClick: open }, images.length ? 'Изменить галерею' : 'Выбрать фотографии' ); }
+					render: function ( { open } ) { return el( Button, { variant: 'secondary', onClick: open }, images.length ? 'Изменить галерею' : ( canUseVideo ? 'Выбрать медиа' : 'Выбрать фотографии' ) ); }
 				} )
 			)
 		);
@@ -85,7 +121,7 @@
 					el( SelectControl, { label: 'Вид галереи', value: attributes.variant || 'hotel', options: [ { label: 'Гостиница', value: 'hotel' }, { label: 'Ресторан', value: 'restaurant' } ], onChange: function ( value ) { setAttributes( { variant: value } ); } } ),
 					el( TextControl, { label: 'Описание для доступности', value: attributes.ariaLabel || '', onChange: function ( value ) { setAttributes( { ariaLabel: value } ); } } )
 				) ),
-				el( GalleryControl, { label: 'Свои фотографии (если не выбраны, используются утверждённые)', value: attributes.images || [], onChange: function ( value ) { setAttributes( { images: value } ); } } )
+				el( GalleryControl, { label: ( attributes.variant || 'hotel' ) === 'restaurant' ? 'Свои фотографии и видео (если не выбраны, используются утверждённые)' : 'Свои фотографии (если не выбраны, используются утверждённые)', allowVideo: ( attributes.variant || 'hotel' ) === 'restaurant', value: attributes.images || [], onChange: function ( value ) { setAttributes( { images: value } ); } } )
 			);
 		}
 	} );
@@ -182,7 +218,7 @@
 			el( TextControl, { label: 'Название характеристики', value: meta._bn_room_placement_label || 'Размещение', onChange: function ( value ) { update( '_bn_room_placement_label', value ); } } ),
 			el( TextControl, { label: 'Значение характеристики', help: 'Например: «2 кровати»', value: meta._bn_room_placement || '', onChange: function ( value ) { update( '_bn_room_placement', value ); } } ),
 			el( TextControl, { label: 'Единица цены', help: 'Например: «за номер» или «за место»', value: meta._bn_room_price_unit || 'за номер', onChange: function ( value ) { update( '_bn_room_price_unit', value ); } } ),
-			el( GalleryControl, { value: gallery, onChange: function ( value ) { update( '_bn_room_gallery', JSON.stringify( value ) ); } } )
+			el( GalleryControl, { value: gallery, allowVideo: false, onChange: function ( value ) { update( '_bn_room_gallery', JSON.stringify( value ) ); } } )
 		);
 	}
 

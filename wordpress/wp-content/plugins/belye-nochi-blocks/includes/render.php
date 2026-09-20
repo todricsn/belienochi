@@ -91,17 +91,64 @@ function bn_blocks_default_gallery_images( $variant ) {
 	return $images;
 }
 
+/**
+ * Normalize one gallery item without allowing media type to leak into room galleries.
+ *
+ * Explicit dimensions are preferred because video metadata can describe the encoded
+ * canvas rather than the displayed orientation (for example, a rotated phone video).
+ */
+function bn_blocks_gallery_media_info( $item ) {
+	$item = is_array( $item ) ? $item : array();
+	$id   = ! empty( $item['id'] ) ? absint( $item['id'] ) : 0;
+	$mime = strtolower( sanitize_mime_type( (string) ( $item['mime'] ?? '' ) ) );
+
+	if ( $id ) {
+		$attachment_mime = get_post_mime_type( $id );
+		if ( $attachment_mime ) {
+			$mime = strtolower( sanitize_mime_type( $attachment_mime ) );
+		}
+	}
+
+	$metadata       = $id ? wp_get_attachment_metadata( $id ) : array();
+	$metadata_width = is_array( $metadata ) ? absint( $metadata['width'] ?? 0 ) : 0;
+	$metadata_height = is_array( $metadata ) ? absint( $metadata['height'] ?? 0 ) : 0;
+	$width          = ! empty( $item['width'] ) ? absint( $item['width'] ) : $metadata_width;
+	$height         = ! empty( $item['height'] ) ? absint( $item['height'] ) : $metadata_height;
+	$type           = strtolower( (string) ( $item['type'] ?? '' ) );
+	$is_video       = 'video' === $type || 0 === strpos( $type, 'video/' ) || 0 === strpos( $mime, 'video/' );
+
+	return array(
+		'type'   => $is_video ? 'video' : 'image',
+		'mime'   => $mime,
+		'width'  => $width,
+		'height' => $height,
+	);
+}
+
 function bn_blocks_render_photo_gallery( $attributes ) {
 	$variant = ( $attributes['variant'] ?? 'hotel' ) === 'restaurant' ? 'restaurant' : 'hotel';
 	if ( empty( $attributes['images'] ) ) {
 		return bn_blocks_source_fragment( 'index.html', '', 'restaurant' === $variant ? 'restaurant-gallery' : 'photo-gallery' );
 	}
-	$images  = $attributes['images'];
+	$images  = array_values( array_filter( (array) $attributes['images'], 'is_array' ) );
 	if ( ! $images ) {
 		return '';
 	}
 
 	$restaurant = 'restaurant' === $variant;
+	if ( ! $restaurant ) {
+		$images = array_values(
+			array_filter(
+				$images,
+				static function ( $image ) {
+					return 'video' !== bn_blocks_gallery_media_info( $image )['type'];
+				}
+			)
+		);
+		if ( ! $images ) {
+			return '';
+		}
+	}
 	$root_class = $restaurant ? 'restaurant-gallery reveal' : 'photo-gallery reveal';
 	$data_root  = $restaurant ? 'data-restaurant-gallery' : 'data-photo-gallery';
 	$label      = $attributes['ariaLabel'] ?? ( $restaurant ? 'Фотографии ресторана Белые Ночи' : 'Фотографии гостиницы и номеров Белых Ночей' );
@@ -112,19 +159,44 @@ function bn_blocks_render_photo_gallery( $attributes ) {
 		<?php if ( $restaurant ) : ?>
 			<?php foreach ( $images as $index => $image ) : ?>
 				<?php
-				$width  = 0;
-				$height = 0;
-				if ( ! empty( $image['id'] ) ) {
-					$metadata = wp_get_attachment_metadata( absint( $image['id'] ) );
-					$width    = is_array( $metadata ) ? absint( $metadata['width'] ?? 0 ) : 0;
-					$height   = is_array( $metadata ) ? absint( $metadata['height'] ?? 0 ) : 0;
+				if ( empty( $image['url'] ) ) {
+					continue;
 				}
+				$media_info  = bn_blocks_gallery_media_info( $image );
+				$width       = $media_info['width'];
+				$height      = $media_info['height'];
 				$orientation = ( $width && $height && $height > $width ) ? 'portrait' : 'landscape';
+				$media_class = 'restaurant-gallery-item restaurant-gallery-item-' . $orientation;
+				if ( 'video' === $media_info['type'] ) {
+					$media_class .= ' restaurant-gallery-item-video';
+				}
+				$media_style = '';
+				if ( $width && $height ) {
+					$ratio       = number_format( $width / $height, 5, '.', '' );
+					$media_style = ' style="--restaurant-media-ratio:' . esc_attr( $ratio ) . ';"';
+				}
 				?>
-				<figure class="restaurant-gallery-item restaurant-gallery-item-<?php echo esc_attr( $orientation ); ?>">
-					<button type="button" data-restaurant-gallery-open aria-label="Открыть фотографию <?php echo esc_attr( $index + 1 ); ?>">
-						<img src="<?php echo esc_url( $image['url'] ?? '' ); ?>" alt="<?php echo esc_attr( $image['alt'] ?? '' ); ?>" loading="lazy" decoding="async">
-					</button>
+				<figure class="<?php echo esc_attr( $media_class ); ?>"<?php echo $media_style; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?> >
+					<?php if ( 'video' === $media_info['type'] ) : ?>
+						<?php
+						$video_label = ! empty( $image['alt'] ) ? $image['alt'] : 'Видео ресторана ' . ( $index + 1 );
+						$video_dims  = '';
+						if ( $width ) {
+							$video_dims .= ' width="' . esc_attr( $width ) . '"';
+						}
+						if ( $height ) {
+							$video_dims .= ' height="' . esc_attr( $height ) . '"';
+						}
+						$source_type = 0 === strpos( $media_info['mime'], 'video/' ) ? ' type="' . esc_attr( $media_info['mime'] ) . '"' : '';
+						?>
+						<video src="<?php echo esc_url( $image['url'] ); ?>"<?php echo $video_dims; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?> controls playsinline preload="metadata" aria-label="<?php echo esc_attr( $video_label ); ?>">
+							<source src="<?php echo esc_url( $image['url'] ); ?>"<?php echo $source_type; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>
+						</video>
+					<?php else : ?>
+						<button type="button" data-restaurant-gallery-open aria-label="Открыть фотографию <?php echo esc_attr( $index + 1 ); ?>">
+							<img src="<?php echo esc_url( $image['url'] ); ?>" alt="<?php echo esc_attr( $image['alt'] ?? '' ); ?>" loading="lazy" decoding="async">
+						</button>
+					<?php endif; ?>
 				</figure>
 			<?php endforeach; ?>
 		<?php else : ?>
