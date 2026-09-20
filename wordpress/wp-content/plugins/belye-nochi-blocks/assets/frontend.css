@@ -89,6 +89,19 @@
 }
 
 .bn-footer-policy { color: inherit; font-size: inherit; text-decoration: underline; text-underline-offset: 3px; }
+
+/* Equal side columns keep the disclaimer at the actual page center. */
+.site-footer .footer-bottom {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+}
+.site-footer .footer-bottom > p:nth-child(2) { text-align: center; }
+.site-footer .footer-bottom > .bn-footer-policy { justify-self: end; text-align: right; }
+@media (max-width: 760px) {
+  .site-footer .footer-bottom { grid-template-columns: minmax(0, 1fr); text-align: center; }
+  .site-footer .footer-bottom > .bn-footer-policy { justify-self: center; text-align: center; }
+}
 .contacts-map .bn-map-consent { position: absolute; inset: 0; z-index: 2; display: grid; place-content: center; justify-items: center; gap: 12px; padding: 24px; text-align: center; background: #373229; color: #f5f0e7; }
 .bn-map-consent p { margin: 0; }
 .bn-map-consent button { color: #f5f0e7; border-color: #f5f0e7; }
